@@ -40,11 +40,12 @@ model Child {
 }
 
 model Activity {
-  id    String  @id @default(cuid())
-  type  String
-  notes String?
-
+  id        String   @id @default(cuid())
+  type      String
   timestamp DateTime
+  notes     String?
+  metadata  String?
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
