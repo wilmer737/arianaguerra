@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+// import { useLoaderData } from "@remix-run/react";
 
 import Layout from "~/components/Layout";
 import { requireUserId } from "~/session.server";
@@ -22,7 +22,7 @@ export const loader = async ({ request }: LoaderArgs) => {
 };
 
 function Home() {
-  const data = useLoaderData<typeof loader>();
+  // const data = useLoaderData<typeof loader>();
 
   return (
     <Layout title="Today">
