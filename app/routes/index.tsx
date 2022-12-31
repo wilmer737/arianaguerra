@@ -1,9 +1,9 @@
 import type { LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-// import { useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 
 import Layout from "~/components/Layout";
-import { requireUserId } from "~/session.server";
+import { requireUser } from "~/session.server";
 
 const activityTypes = [
   "DIAPER_CHANGE",
@@ -15,24 +15,31 @@ const activityTypes = [
 ];
 
 export const loader = async ({ request }: LoaderArgs) => {
-  await requireUserId(request);
+  const user = await requireUser(request);
+  console.log({ user, children: user.children });
+
+  if (!user.children || user.children.length === 0) {
+    return redirect("/child/new");
+  }
+
   return json({
-    activityTypes,
+    // todo:later find a way to select and save the child
+    child: user.children[0],
   });
 };
 
 function Home() {
-  // const data = useLoaderData<typeof loader>();
-
+  const { child } = useLoaderData<typeof loader>();
+  const fullName = `${child.firstName} ${child.lastName}`;
   return (
     <Layout title="Today">
       <div className="flex flex-col items-center justify-center">
         <img
-          src="ariana_sono.jpg"
-          className="h-40 w-40 rounded-full border-8 border-emerald-600 object-cover"
-          alt="Abel"
+          src={child.imgUrl || "ariana_sono.jpg"}
+          className="rounded-full border-4 border-emerald-600 object-cover h-32 w-32"
+          alt={fullName}
         />
-        <div className="p-2 text-lg">Ariana Guerra</div>
+        <div className="p-2 text-lg">{fullName}</div>
       </div>
     </Layout>
   );
