@@ -22,38 +22,37 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 
 export const action: ActionFunction = async ({ request }: ActionArgs) => {
   const formData = await request.formData();
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const inviteCode = formData.get("invite");
+  const email = formData.get("email") as string;
+  const password = formData.get("password") as string;
+  const inviteCode = formData.get("invite") as string;
 
+  const errors: { [name: string]: null | string } = {};
+
+  let status: number | undefined;
+
+  console.log("wilmer", process.env.INVITE_SECRET);
   if (inviteCode !== process.env.INVITE_SECRET) {
-    return json(
-      {
-        errors: { invite: "code is invalid" },
-      },
-      { status: 403 }
-    );
+    errors.invite = "Invalid invite code";
+    status = 403;
   }
 
   if (!validateEmail(email)) {
-    return json(
-      { errors: { email: "Email is invalid", password: null } },
-      { status: 400 }
-    );
+    errors.email = "Email is invalid";
+    status = 400;
   }
 
   if (typeof password !== "string" || password.length === 0) {
-    return json(
-      { errors: { email: null, password: "Password is required" } },
-      { status: 400 }
-    );
+    errors.password = "Password is required";
+    status = 400;
   }
 
-  if (password.length < 8) {
-    return json(
-      { errors: { email: null, password: "Password is too short" } },
-      { status: 400 }
-    );
+  if (!password || password.length < 8) {
+    errors.password = "Password must be at least 8 characters";
+    status = 400;
+  }
+
+  if (Object.entries(errors).length > 0) {
+    return json({ errors }, { status });
   }
 
   const existingUser = await getUserByEmail(email);

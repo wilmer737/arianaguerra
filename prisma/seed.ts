@@ -28,7 +28,14 @@ async function seed() {
     data: {
       firstName: "Ariana",
       lastName: "Guerra",
-      parentId: user.id,
+      birthday: new Date("2023-03-23"),
+      parents: {
+        connect: [
+          {
+            id: user.id,
+          },
+        ],
+      },
     },
   });
 
@@ -38,8 +45,9 @@ async function seed() {
       notes: "Diaper was wet",
       childId: child.id,
       timestamp: new Date(),
-    }
-  })
+      metadata: JSON.stringify({ number: 1 }),
+    },
+  });
 
   console.log(`Database has been seeded. 🌱`);
 }

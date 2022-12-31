@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Link } from "@remix-run/react";
+import { Link, Form } from "@remix-run/react";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -8,13 +8,37 @@ type LayoutProps = {
 
 function ProfileButton() {
   return (
-    <button className="absolute top-1 right-1">
-      <img
-        src="ariana_sono.jpg"
-        className="h-7 w-7 rounded-full border-2"
-        alt="Profile"
-      />
-    </button>
+    <Form method="post" action="/logout">
+      <button
+        className="absolute top-1 right-1 rounded bg-emerald-600 py-1 px-2 text-sm text-white hover:bg-emerald-700"
+        type="submit"
+      >
+        Logout
+      </button>
+    </Form>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="m-8 rounded-xl bg-emerald-200 py-2 text-center text-sm">
+      <nav className="flex items-center justify-evenly">
+        <Link to="/">Home</Link>
+
+        <Link to="/">Stats</Link>
+
+        <Link to="/activity">
+          <button
+            type="button"
+            className="h-12 w-12 rounded-full border-none bg-emerald-700 text-white"
+          >
+            +
+          </button>
+        </Link>
+        <Link to="/">Children</Link>
+        <Link to="/">User</Link>
+      </nav>
+    </footer>
   );
 }
 
@@ -32,20 +56,7 @@ const Layout: React.FC<LayoutProps> = ({
 
       <div className="ml-8 mr-8 flex-grow">{children}</div>
 
-      <footer className="m-8 rounded-xl bg-emerald-200 py-2 text-center text-sm">
-        <nav className="flex justify-evenly">
-          <button>Home</button>
-          <Link to="/activity">
-            <button
-              type="button"
-              className="h-12 w-12 rounded-full border-none bg-emerald-700 text-white"
-            >
-              +
-            </button>
-          </Link>
-          <button>Stats</button>
-        </nav>
-      </footer>
+      <Footer />
     </div>
   );
 };
