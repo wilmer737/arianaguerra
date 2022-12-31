@@ -30,7 +30,6 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
 
   let status: number | undefined;
 
-  console.log("wilmer", process.env.INVITE_SECRET);
   if (inviteCode !== process.env.INVITE_SECRET) {
     errors.invite = "Invalid invite code";
     status = 403;

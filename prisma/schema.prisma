@@ -27,13 +27,13 @@ model Password {
 }
 
 model Child {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   firstName String
   lastName  String
   imgUrl    String?
-  birthday  DateTime
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  birthDate DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
   activities Activity[]
   parents    User[]

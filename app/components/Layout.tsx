@@ -4,13 +4,14 @@ import { Link, Form } from "@remix-run/react";
 type LayoutProps = {
   children: React.ReactNode;
   title?: string;
+  withFooter?: boolean;
 };
 
 function ProfileButton() {
   return (
     <Form method="post" action="/logout">
       <button
-        className="absolute top-1 right-1 rounded bg-emerald-600 py-1 px-2 text-sm text-white hover:bg-emerald-700"
+        className="absolute top-2 right-2 rounded bg-emerald-600 py-1 px-2 text-sm text-white hover:bg-emerald-700"
         type="submit"
       >
         Logout
@@ -44,6 +45,7 @@ function Footer() {
 
 const Layout: React.FC<LayoutProps> = ({
   children,
+  withFooter = true,
   title = "Ariana Guerra",
 }) => {
   return (
@@ -56,7 +58,7 @@ const Layout: React.FC<LayoutProps> = ({
 
       <div className="ml-8 mr-8 flex-grow">{children}</div>
 
-      <Footer />
+      {withFooter && <Footer />}
     </div>
   );
 };

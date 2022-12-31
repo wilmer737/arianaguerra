@@ -1,5 +1,8 @@
 /** @type {import('@types/eslint').Linter.BaseConfig} */
 module.exports = {
+  rules: {
+    'no-console': 'error',
+  },
   extends: [
     "@remix-run/eslint-config",
     "@remix-run/eslint-config/node",
