@@ -11,7 +11,9 @@ import { Form, useActionData } from "@remix-run/react";
 
 import InputField from "~/components/InputField";
 import Layout from "~/components/Layout";
-import { requireUserId } from "~/session.server";
+import { createChild } from "~/models/child.server";
+import { getUserId, requireUserId } from "~/session.server";
+import { isValidYYYYMM } from "~/utils/date";
 
 export const meta: MetaFunction = () => {
   return {
@@ -25,16 +27,35 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 };
 
 export const action: ActionFunction = async ({ request }: ActionArgs) => {
+  const userId = (await getUserId(request)) as string;
   const formData = await request.formData();
   const firstName = formData.get("firstName") as string;
   const lastName = formData.get("lastName") as string;
   const birthDate = formData.get("birthDate") as string;
 
-  const errors = {};
+  const errors: { [key: string]: string } = {};
+
+  if (!firstName) {
+    errors["firstName"] = "First name is required";
+  }
+
+  if (!lastName) {
+    errors["lastName"] = "Last name is required";
+  }
+
+  if (!birthDate || !isValidYYYYMM(birthDate)) {
+    errors["birthDate"] = "Birth date is invalid";
+  }
 
   if (Object.entries(errors).length > 0) {
     return json({ errors }, { status: 400 });
   }
+
+  await createChild(userId, {
+    firstName,
+    lastName,
+    birthDate: new Date(birthDate),
+  });
 
   return redirect("/");
 };
@@ -72,7 +93,6 @@ function NewChildRoute() {
           label="Last Name"
           id="birthDate"
           type="date"
-          required
           errorMessage={data?.errors?.birthDate}
         />
 
