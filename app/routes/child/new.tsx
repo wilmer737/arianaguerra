@@ -67,7 +67,7 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
 function NewChildRoute() {
   const data = useActionData<typeof action>();
   return (
-    <Layout title="Add Child" withFooter={false}>
+    <Layout title="Add Your Child" withFooter={false}>
       <Form method="post" className="space-y-6">
         <div className="flex gap-2">
           <InputField
@@ -90,7 +90,7 @@ function NewChildRoute() {
         </div>
 
         <InputField
-          label="Last Name"
+          label="Birth Date"
           id="birthDate"
           type="date"
           errorMessage={data?.errors?.birthDate}
