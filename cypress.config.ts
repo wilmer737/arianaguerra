@@ -15,6 +15,7 @@ export default defineConfig({
       // cy.task('log', whateverYouWantInTheTerminal)
       on("task", {
         log: (message) => {
+          // eslint-disable-next-line no-console
           console.log(message);
 
           return null;

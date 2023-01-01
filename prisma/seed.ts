@@ -28,7 +28,7 @@ async function seed() {
     data: {
       firstName: "Ariana",
       lastName: "Guerra",
-      birthday: new Date("2023-03-23"),
+      birthDate: new Date("2023-03-23"),
       parents: {
         connect: [
           {
@@ -49,11 +49,13 @@ async function seed() {
     },
   });
 
+  // eslint-disable-next-line no-console
   console.log(`Database has been seeded. 🌱`);
 }
 
 seed()
   .catch((e) => {
+    // eslint-disable-next-line no-console
     console.error(e);
     process.exit(1);
   })

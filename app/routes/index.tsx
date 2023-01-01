@@ -40,7 +40,7 @@ function Home() {
           alt={fullName}
         />
         <div className="p-2 text-lg">{fullName}</div>
-        <div className="w-full rounded-md border-2 border-red-500 bg-red-400 text-white h-12 py-1 px-2">
+        <div className="w-full rounded-md border-2 border-blue-500 bg-blue-400 text-white h-12 py-1 px-2">
           <h2 className="text-l">Latest Activity</h2>
         </div>
       </div>
