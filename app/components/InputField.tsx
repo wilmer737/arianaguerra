@@ -1,4 +1,4 @@
-type FieldProps = {
+interface FieldProps extends React.HTMLProps<HTMLInputElement> {
   label: string;
   id: string;
   type: string;
@@ -6,7 +6,7 @@ type FieldProps = {
   autoFocus?: boolean;
   placeholder?: string;
   errorMessage?: string;
-};
+}
 
 function Field({
   label,
@@ -16,6 +16,7 @@ function Field({
   autoFocus,
   placeholder,
   errorMessage,
+  ...htmlProps
 }: FieldProps) {
   return (
     <div>
@@ -24,14 +25,9 @@ function Field({
       </label>
       <div className="mt-1">
         <input
-          id={id}
-          required={required}
-          autoFocus={autoFocus}
-          name={id}
-          type={type}
-          autoComplete={id}
+          name={htmlProps.name || id}
           className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
-          placeholder={placeholder}
+          {...htmlProps}
         />
         {errorMessage && (
           <div className="pt-1 text-red-700" id="email-error">
