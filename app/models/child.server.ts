@@ -11,11 +11,7 @@ export async function createChild(
     data: {
       ...child,
       parents: {
-        connect: [
-          {
-            id: parentId,
-          },
-        ],
+        connect: [{ id: parentId }],
       },
     },
   });
