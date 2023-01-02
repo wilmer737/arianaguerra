@@ -25,6 +25,7 @@ function Field({
       </label>
       <div className="mt-1">
         <input
+          id={id}
           name={htmlProps.name || id}
           className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
           {...htmlProps}
