@@ -5,14 +5,7 @@ import { useLoaderData } from "@remix-run/react";
 import Layout from "~/components/Layout";
 import { requireUser } from "~/session.server";
 
-const activityTypes = [
-  "DIAPER_CHANGE",
-  "FEEDING",
-  "SLEEP",
-  "BATH",
-  "MEDICATION",
-  "OTHER",
-];
+
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await requireUser(request);
@@ -24,7 +17,6 @@ export const loader = async ({ request }: LoaderArgs) => {
   return json({
     // todo:later find a way to select and save the child
     child: user.children[0],
-    activityTypes,
   });
 };
 
