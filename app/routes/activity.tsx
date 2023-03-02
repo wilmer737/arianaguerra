@@ -12,7 +12,6 @@ import Layout from "~/components/Layout";
 import { activityTypes, createActivity } from "~/models/activity.server";
 import type { ActivityFormType } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
-import humanizeConstant from "~/utils/humanizeConstant";
 import TextArea from "~/components/TextArea";
 import { colorTextStyles } from "~/tailwind/utils";
 
@@ -22,14 +21,10 @@ export const meta = () => {
   };
 };
 
-type LoaderData = {
-  activityTypes: ActivityFormType[];
-};
-
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
-  return {
+export const loader: LoaderFunction = async () => {
+  return json({
     activityTypes,
-  };
+  });
 };
 
 export const action: ActionFunction = async ({ request }: ActionArgs) => {
@@ -59,7 +54,7 @@ function RadioInput() {
 }
 
 function ActivityRoute() {
-  const data = useLoaderData<LoaderData>();
+  const data = useLoaderData<typeof loader>();
   const [activity, setActivity] = React.useState<ActivityFormType | null>(null);
 
   return (
@@ -102,7 +97,7 @@ function ActivityRoute() {
 
       <div className="start flex flex-wrap gap-4 text-2xl ">
         {!activity &&
-          data.activityTypes.map((activityType) => {
+          data.activityTypes.map((activityType: ActivityFormType) => {
             const color = colorTextStyles[activityType.color];
 
             return (
