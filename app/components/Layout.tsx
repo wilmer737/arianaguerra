@@ -22,7 +22,8 @@ function ProfileButton() {
 
 function Footer() {
   return (
-    <footer className="m-8 rounded-xl bg-emerald-200 py-2 text-center text-sm">
+    <footer className="bg-emerald-600 py-2 text-center text-sm text-white font-bold
+    ">
       <nav className="flex items-center justify-evenly">
         <Link to="/">Home</Link>
 
@@ -31,7 +32,7 @@ function Footer() {
         <Link to="/activity">
           <button
             type="button"
-            className="h-12 w-12 rounded-full border-none bg-emerald-700 text-white"
+            className="h-12 w-12 rounded-full border-none bg-emerald-400 text-white"
           >
             +
           </button>
