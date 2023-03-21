@@ -12,7 +12,7 @@ import { Form, useActionData } from "@remix-run/react";
 import { createUserSession, getUserId } from "~/session.server";
 import { getUserByEmail, createUser } from "~/models/user.server";
 import { validateEmail } from "~/utils";
-import InputField from "~/components/InputField";
+import InputField from "~/components/forms/fields/InputField";
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   const userId = await getUserId(request);

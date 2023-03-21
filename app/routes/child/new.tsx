@@ -9,7 +9,7 @@ import { redirect } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 
-import InputField from "~/components/InputField";
+import InputField from "~/components/forms/fields/InputField";
 import Layout from "~/components/Layout";
 import { createChild } from "~/models/child.server";
 import { getUserId, requireUserId } from "~/session.server";
