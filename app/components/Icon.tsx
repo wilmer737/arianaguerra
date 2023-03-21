@@ -1,5 +1,11 @@
 import { TbMedicineSyrup } from "react-icons/tb";
-import { GiBabyBottle, GiBathtub, GiNightSleep } from "react-icons/gi";
+import {
+  GiBabyBottle,
+  GiBathtub,
+  GiNightSleep,
+  GiFloorHatch,
+  GiBabyFace
+} from "react-icons/gi";
 import { MdBabyChangingStation } from "react-icons/md";
 import type { IconType } from "react-icons";
 
@@ -9,6 +15,8 @@ const icons: Record<string, IconType> = {
   GiBathtub,
   GiNightSleep,
   MdBabyChangingStation,
+  GiFloorHatch,
+  GiBabyFace
 };
 
 interface IconProps {
@@ -19,7 +27,7 @@ interface IconProps {
 function Icon({ name, label }: IconProps) {
   const Icon = icons[name];
   if (!Icon) {
-    return <span>label</span>;
+    return <span>{label}</span>;
   }
 
   return <Icon aria-label={label} />;
