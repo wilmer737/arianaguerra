@@ -2,12 +2,13 @@ import { useParams } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 
-import { ZodError } from "zod";
-
 import { activityTypes } from "~/models/activity.server";
 import Layout from "~/components/Layout";
 import ActivityForm from "~/components/forms/activity/form";
-import { validator } from "~/components/forms/activity/validator";
+import {
+  validator,
+  ValidatorError,
+} from "~/components/forms/activity/validator";
 
 export const loader = async ({ params }: LoaderArgs) => {
   if (!params.type || !Object.values(activityTypes).includes(params.type)) {
@@ -33,20 +34,17 @@ export const action = async ({ request, params }: ActionArgs) => {
     notes,
   };
 
-  console.log(data);
   let validatedData;
   try {
     validatedData = validator.parse(data);
   } catch (error) {
-    if (error instanceof ZodError) {
+    if (error instanceof ValidatorError) {
       return json({ errors: error.errors }, { status: 422 });
     }
     return json({ errors: ["Something went wrong"] }, { status: 500 });
   }
 
-  console.log({ validatedData });
-
-  return null;
+  return validatedData;
 };
 
 function ActivityTypeRoute() {

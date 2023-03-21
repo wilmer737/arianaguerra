@@ -6,3 +6,5 @@ export const validator = z.object({
   notes: z.string().nullable().optional(),
   type: z.nativeEnum(activityTypes),
 });
+
+export class ValidatorError extends z.ZodError {}

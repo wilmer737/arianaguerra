@@ -1,14 +1,10 @@
 import { useLoaderData, Link } from "@remix-run/react";
 import { json } from "@remix-run/node";
-import type {
-  LoaderFunction,
-  ActionFunction,
-  ActionArgs,
-} from "@remix-run/node";
+import type { LoaderFunction } from "@remix-run/node";
 
 import Icon from "~/components/Icon";
 import Layout from "~/components/Layout";
-import { createActivity, activityTypes } from "~/models/activity.server";
+import { activityTypes } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
 import { colorTextStyles } from "~/tailwind/utils";
 import humanizeConstant from "~/utils/humanizeConstant";
