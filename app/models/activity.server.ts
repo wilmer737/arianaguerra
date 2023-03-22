@@ -17,12 +17,14 @@ export function createActivity(
   childId: string,
   activity: Pick<Activity, "notes" | "type" | "timestamp">
 ) {
+  console.log({
+    ...activity,
+    childId,
+  })
   return prisma.activity.create({
     data: {
       ...activity,
-      child: {
-        connect: { id: childId },
-      },
+      childId,
     },
   });
 }

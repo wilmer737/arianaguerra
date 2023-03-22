@@ -28,7 +28,7 @@ async function seed() {
     data: {
       firstName: "Ariana",
       lastName: "Guerra",
-      birthDate: new Date("2023-03-23"),
+      birthDate: new Date("2023-03-16"),
       parents: {
         connect: [
           {

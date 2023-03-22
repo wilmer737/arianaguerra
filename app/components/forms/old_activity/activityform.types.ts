@@ -2,7 +2,7 @@ import type { TailwindColor } from "~/tailwind/types";
 
 export type MetaData = {
   name: string;
-  type: "text" | "number" | "radio" | "duration";
+  type: string;
   unit?: string;
   options?: string[];
   label?: string;

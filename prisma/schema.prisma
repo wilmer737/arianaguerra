@@ -50,5 +50,5 @@ model Activity {
   updatedAt DateTime @updatedAt
 
   child   Child  @relation(fields: [childId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  childId String @unique
+  childId String
 }
