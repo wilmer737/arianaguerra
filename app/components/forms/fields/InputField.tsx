@@ -11,10 +11,6 @@ interface FieldProps extends React.HTMLProps<HTMLInputElement> {
 function Field({
   label,
   id,
-  type,
-  required,
-  autoFocus,
-  placeholder,
   errorMessage,
   ...htmlProps
 }: FieldProps) {

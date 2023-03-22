@@ -1,37 +1,49 @@
-import React from "react";
 import { Form } from "@remix-run/react";
+
 import TextArea from "~/components/forms/fields/TextArea";
+import DateTimePicker from "~/components/forms/fields/Datetime";
+import Button from "~/components/Button";
+import MetaDataField from "~/components/forms/activity/MetaDataField";
 
 interface ActivityFormProps {
   type: string;
 }
 
-function ActivityForm({ type }: ActivityFormProps) {
-  const [datetime, setDatetime] = React.useState<string>(() => {
-    const date = new Date();
-    const mins = date.getMinutes().toString().padStart(2, "0");
-    const hours = date.getHours().toString().padStart(2, "0");
+const activityTypes = {
+  DIAPER_CHANGE: "DIAPER_CHANGE",
+  FEEDING: "FEEDING",
+  SLEEP: "SLEEP",
+  MEDICATION: "MEDICATION",
+  BATH: "BATH",
+  TUMMY_TIME: "TUMMY_TIME",
+  OTHER: "OTHER",
+};
 
-    return `${hours}:${mins}`;
-  });
+const metadataFields = {
+  [activityTypes.DIAPER_CHANGE]: [
+    {
+      type: "radio",
+      label: "Wet or dirty?",
+      name: "meta.type",
+      options: ["wet", "dirty", "both"],
+    },
+  ],
+};
+
+function ActivityForm({ type }: ActivityFormProps) {
+  const metaFields = metadataFields[type];
 
   return (
     <Form method="post">
-      <div className="flex flex-col">
-        <label htmlFor="timestamp">Timestamp</label>
-        <input
-          type="time"
-          id="timestamp"
-          name="timestamp"
-          required
-          value={datetime}
-          onChange={(e) => setDatetime(e.target.value)}
-        />
-      </div>
+      <DateTimePicker id="timestamp" required />
 
-      <TextArea label="Notes" />
+      {metaFields?.map((field) => {
+        return <MetaDataField key={field.name} meta={field} />;
+      })}
 
-      <button type="submit">Add</button>
+      <TextArea label="Notes" name="notes" />
+
+      <Button type="submit">Add</Button>
     </Form>
   );
 }

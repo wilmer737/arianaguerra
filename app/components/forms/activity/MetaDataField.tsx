@@ -1,8 +1,12 @@
-import type { MetaData } from "~/components/forms/old_activity/activityform.types";
 import Radio from "~/components/forms/fields/Radio";
 
 interface MetaDataFieldProps {
-  meta: MetaData;
+  meta: {
+    type: string;
+    name: string;
+    label?: string;
+    options?: string[];
+  };
 }
 
 function MetaDataField(props: MetaDataFieldProps) {
