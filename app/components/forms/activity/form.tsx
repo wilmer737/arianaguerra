@@ -3,7 +3,6 @@ import { Form } from "@remix-run/react";
 import TextArea from "~/components/forms/fields/TextArea";
 import DateTimePicker from "~/components/forms/fields/Datetime";
 import Button from "~/components/Button";
-import Radio from "~/components/forms/fields/Radio";
 import MetaDataField from "~/components/forms/activity/MetaDataField";
 
 interface ActivityFormProps {

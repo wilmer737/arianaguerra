@@ -13,14 +13,18 @@ export const activityTypes = {
   OTHER: "OTHER",
 };
 
+export function getActivityByChildId(childId: string) {
+  return prisma.activity.findMany({
+    where: {
+      childId,
+    },
+  });
+}
+
 export function createActivity(
   childId: string,
   activity: Pick<Activity, "notes" | "type" | "timestamp">
 ) {
-  console.log({
-    ...activity,
-    childId,
-  })
   return prisma.activity.create({
     data: {
       ...activity,
