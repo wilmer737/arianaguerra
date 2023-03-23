@@ -40,10 +40,13 @@ function Home() {
 
         {activities.map((activity) => {
           // eslint-disable-next-line no-console
-          console.log('activity', activity)
+          console.log("activity", activity);
+
+          const date = new Date(activity.timestamp);
           return (
             <div key={activity.id}>
               <p>{humanizeConstant(activity.type)}</p>
+              <p>{`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</p>
             </div>
           );
         })}
