@@ -5,6 +5,7 @@ interface MetaDataFieldProps {
     type: string;
     name: string;
     label?: string;
+    placeholder?: string;
     options?: string[];
   };
 }
@@ -60,7 +61,7 @@ function MetaDataField(props: MetaDataFieldProps) {
       <div className="flex flex-col">
         <label htmlFor={meta.name}>{meta.label || meta.name}</label>
         <input
-          placeholder={meta.name}
+          placeholder={meta.placeholder}
           type={meta.type}
           id={meta.name}
           name={`meta[${meta.name}]`}

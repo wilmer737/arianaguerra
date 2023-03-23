@@ -28,6 +28,40 @@ const metadataFields = {
       options: ["wet", "dirty", "both"],
     },
   ],
+  [activityTypes.FEEDING]: [
+    {
+      type: "radio",
+      label: "Type of feeding",
+      name: "meta.type",
+      options: ["breast", "formula", "solid"],
+    },
+    {
+      type: 'duration',
+      label: 'Duration',
+      name: 'meta.duration',
+    },
+    {
+      type: "number",
+      label: "Amount",
+      name: "meta.amount",
+      unit: 'oz',
+      placeholder: '3'
+    }
+  ],
+  [activityTypes.SLEEP]: [
+    {
+      type: 'duration',
+      label: 'Duration',
+      name: 'meta.duration',
+    }
+  ],
+  [activityTypes.TUMMY_TIME]: [
+    {
+      type: 'duration',
+      label: 'Duration',
+      name: 'meta.duration',
+    }
+  ]
 };
 
 function ActivityForm({ type }: ActivityFormProps) {
