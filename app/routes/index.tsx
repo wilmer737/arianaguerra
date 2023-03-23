@@ -8,8 +8,9 @@ import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
 import humanizeConstant from "~/utils/humanizeConstant";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
   const user = await requireUser(request);
+  const filterDate = new Date(params.date ?? Date.now());
 
   if (!user.children || user.children.length === 0) {
     return redirect("/child/new");
