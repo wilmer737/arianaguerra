@@ -2,6 +2,7 @@ import { useParams } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { z } from "zod";
+import { parseISO } from "date-fns";
 
 import { activityTypes, createActivity } from "~/models/activity.server";
 import Layout from "~/components/Layout";
@@ -27,18 +28,6 @@ export const action = async ({ request, params }: ActionArgs) => {
   const timestamp = formData.get("timestamp") as string;
   const notes = formData.get("notes");
 
-  const datePieces = timestamp.split("T");
-  const dateP = datePieces[0].split("-");
-  const hourP = datePieces[1].split(":");
-
-  const timestampWithOffset = new Date(
-    Number(dateP[0]),
-    Number(dateP[1]) - 1,
-    Number(dateP[2]),
-    Number(hourP[0]),
-    Number(hourP[1])
-  );
-
   const metadata: Record<any, any> = {};
   let hasMetaData = false;
   for (const [key, value] of formData.entries()) {
@@ -49,11 +38,11 @@ export const action = async ({ request, params }: ActionArgs) => {
   }
 
   // eslint-disable-next-line no-console
-  console.log(timestampWithOffset);
+  console.log(parseISO(timestamp));
 
   const data = {
     type: params.type,
-    timestamp: timestampWithOffset,
+    timestamp: parseISO(timestamp),
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,
   };
