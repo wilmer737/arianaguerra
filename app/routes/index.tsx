@@ -1,6 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
+import { DateTime } from "luxon";
 
 import Layout from "~/components/Layout";
 import { getActivityByChildId } from "~/models/activity.server";
@@ -38,18 +39,32 @@ function Home() {
           <h2 className="text-l">Latest Activity</h2>
         </div>
 
-        {activities.map((activity) => {
-          // eslint-disable-next-line no-console
-          console.log("activity", activity);
+        <div className="h-96 w-full overflow-y-scroll">
+          {activities.map((activity) => {
+            // eslint-disable-next-line no-console
+            console.log("activity", activity);
 
-          const date = new Date(activity.timestamp);
-          return (
-            <div key={activity.id}>
-              <p>{humanizeConstant(activity.type)}</p>
-              <p>{`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}</p>
-            </div>
-          );
-        })}
+            const formatter = Intl.DateTimeFormat([], {
+              weekday: "short",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric",
+              timeZone: "America/Los_Angeles",
+            });
+
+            return (
+              <div key={activity.id}>
+                <p className="font-bold">{humanizeConstant(activity.type)}</p>
+                <p>
+                  {formatter.format(
+                    DateTime.fromISO(activity.timestamp).toJSDate()
+                  )}
+                </p>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </Layout>
   );

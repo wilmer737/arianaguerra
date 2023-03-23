@@ -22,8 +22,7 @@ function ProfileButton() {
 
 function Footer() {
   return (
-    <footer className="bg-emerald-600 py-2 text-center text-sm text-white font-bold
-    ">
+    <footer className="fixed bottom-0 right-0 left-0 bg-emerald-600 py-2 text-center text-sm font-bold text-white">
       <nav className="flex items-center justify-evenly">
         <Link to="/">Home</Link>
 
