@@ -39,6 +39,8 @@ function Home() {
         </div>
 
         {activities.map((activity) => {
+          // eslint-disable-next-line no-console
+          console.log('activity', activity)
           return (
             <div key={activity.id}>
               <p>{humanizeConstant(activity.type)}</p>
