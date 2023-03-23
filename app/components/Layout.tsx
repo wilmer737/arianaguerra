@@ -38,7 +38,7 @@ function Footer() {
           </button>
         </Link>
         <Link to="/">Children</Link>
-        <Link to="/">User</Link>
+        <Link to="/profile">User</Link>
       </nav>
     </footer>
   );

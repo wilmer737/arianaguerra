@@ -1,7 +1,6 @@
 interface FieldProps extends React.HTMLProps<HTMLInputElement> {
   label: string;
   id: string;
-  type: string;
   required?: boolean;
   autoFocus?: boolean;
   placeholder?: string;
