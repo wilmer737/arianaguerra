@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { activityTypes } from "~/models/activity.server";
 
 const prisma = new PrismaClient();
 
@@ -39,15 +40,17 @@ async function seed() {
     },
   });
 
-  await prisma.activity.create({
-    data: {
-      type: "DIAPER_CHANGE",
-      notes: "Diaper was wet",
-      childId: child.id,
-      timestamp: new Date(),
-      metadata: JSON.stringify({ number: 1 }),
-    },
-  });
+  for (const type of Object.values(activityTypes)) {
+    await prisma.activity.create({
+      data: {
+        type,
+        notes: "Diaper was wet",
+        childId: child.id,
+        timestamp: new Date(),
+        metadata: JSON.stringify({ number: 1 }),
+      },
+    });
+  }
 
   // eslint-disable-next-line no-console
   console.log(`Database has been seeded. 🌱`);

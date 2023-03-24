@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData, Link } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { DateTime } from "luxon";
 import { format, add, sub } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
@@ -8,12 +8,13 @@ import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
+import { parseISO } from "date-fns";
 
 import Layout from "~/components/Layout";
+import ActivityList from "~/components/ActivityList";
+
 import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
-import humanizeConstant from "~/utils/humanizeConstant";
-import { parseISO } from "date-fns";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const user = await requireUser(request);
@@ -74,38 +75,7 @@ function Home() {
           <h2 className="text-l">Latest Activity</h2>
         </div>
 
-        <div className="h-96 w-full overflow-y-scroll">
-          {activities.map((activity) => {
-            const formatter = Intl.DateTimeFormat([], {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-              timeZone: "America/Los_Angeles",
-            });
-
-            return (
-              <div key={activity.id}>
-                <p className="font-bold">{humanizeConstant(activity.type)}</p>
-                <p>
-                  {formatter.format(
-                    DateTime.fromISO(activity.timestamp).toJSDate()
-                  )}
-                </p>
-
-                <Form method="delete" action={`/activity/${activity.id}`}>
-                  <button
-                    type="submit"
-                    className="bg-red-400 px-4 py-2 text-white"
-                  >
-                    Delete
-                  </button>
-                </Form>
-              </div>
-            );
-          })}
-        </div>
+        <ActivityList activities={activities} />
       </div>
     </Layout>
   );
