@@ -3,6 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { z } from "zod";
 import { parseISO } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 import { activityTypes, createActivity } from "~/models/activity.server";
 import Layout from "~/components/Layout";
@@ -37,16 +38,14 @@ export const action = async ({ request, params }: ActionArgs) => {
     }
   }
 
-  // eslint-disable-next-line no-console
-  console.log(parseISO(timestamp));
-
   const data = {
     type: params.type,
-    timestamp: parseISO(timestamp),
+    timestamp: utcToZonedTime(parseISO(timestamp), "America/Los_Angeles"),
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,
   };
-
+  // eslint-disable-next-line no-console
+  console.log("data", data);
   let validatedData;
   try {
     validatedData = validator.parse(data);
