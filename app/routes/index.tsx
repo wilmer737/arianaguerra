@@ -1,12 +1,19 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, Link } from "@remix-run/react";
 import { DateTime } from "luxon";
+import { format, add, sub } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
+import {
+  BsFillArrowLeftSquareFill,
+  BsFillArrowRightSquareFill,
+} from "react-icons/bs";
 
 import Layout from "~/components/Layout";
 import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
 import humanizeConstant from "~/utils/humanizeConstant";
+import { parseISO } from "date-fns";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const user = await requireUser(request);
@@ -14,27 +21,48 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return redirect("/child/new");
   }
 
-  const dateFilter = params.date ?? new Date().toISOString().split("T")[0];
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  const date = searchParams.get("date");
+  if (!date) {
+    return redirect(`/?date=${DateTime.local().toISODate()}`);
+  }
 
+  const dateFilter = parseISO(date);
   const activities = await getActivityByChildId(
     user.children[0].id,
-    dateFilter
+    zonedTimeToUtc(dateFilter, "America/Los_Angeles")
   );
 
-  console.log(activities);
   return json({
     // todo:later find a way to select and save the child
     child: user.children[0],
     activities,
+    date: dateFilter,
   });
 };
 
 function Home() {
-  const { child, activities } = useLoaderData<typeof loader>();
+  const { child, activities, date } = useLoaderData<typeof loader>();
 
   const fullName = `${child.firstName} ${child.lastName}`;
+  const d = new Date(date);
+
+  const title = (
+    <div className="flex items-center justify-center gap-2">
+      <Link to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}>
+        <BsFillArrowLeftSquareFill color="green" />
+      </Link>
+      <span>{format(d, "MM-dd-y")}</span>
+
+      <Link to={`/?date=${format(add(d, { days: 1 }), "y-MM-dd")}`}>
+        <BsFillArrowRightSquareFill color="green" />
+      </Link>
+    </div>
+  );
+
   return (
-    <Layout title="Today">
+    <Layout title={title}>
       <div className="flex flex-col items-center justify-center">
         <img
           src={child.imgUrl || "ariana_sono.jpg"}

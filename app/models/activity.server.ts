@@ -1,5 +1,6 @@
 import type { Activity } from "@prisma/client";
 import { prisma } from "~/db.server";
+import { add } from "date-fns";
 
 export type { Activity } from "@prisma/client";
 
@@ -13,20 +14,17 @@ export const activityTypes = {
   OTHER: "OTHER",
 };
 
-export async function getActivityByChildId(childId: string, date: string) {
-  console.log(new Date(date));
-
-  const d = new Date("2023-03-25");
+export async function getActivityByChildId(childId: string, date: Date) {
   return prisma.activity.findMany({
     orderBy: {
       timestamp: "desc",
     },
     where: {
       childId,
-      // timestamp: {
-      //   gte: new Date(d),
-      //   lt: new Date(d.getTime() + 24 * 60 * 60 * 1000),
-      // },
+      timestamp: {
+        gte: date,
+        lt: add(date, { days: 1 }),
+      },
     },
   });
 }

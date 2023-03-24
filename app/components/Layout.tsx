@@ -3,7 +3,7 @@ import { Link, Form } from "@remix-run/react";
 
 type LayoutProps = {
   children: React.ReactNode;
-  title?: string;
+  title?: string | React.ReactNode;
   withFooter?: boolean;
 };
 
