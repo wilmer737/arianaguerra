@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { z } from "zod";
 import { parseISO } from "date-fns";
-import { utcToZonedTime } from "date-fns-tz";
+import { zonedTimeToUtc } from "date-fns-tz";
 
 import { activityTypes, createActivity } from "~/models/activity.server";
 import Layout from "~/components/Layout";
@@ -38,9 +38,18 @@ export const action = async ({ request, params }: ActionArgs) => {
     }
   }
 
+  const date = parseISO(timestamp);
+  // eslint-disable-next-line no-console
+  console.log("date", date);
+
+  const formattedDate = zonedTimeToUtc(date, "America/Los_Angeles");
+
+  // eslint-disable-next-line no-console
+  console.log("formattedDate", formattedDate);
+
   const data = {
     type: params.type,
-    timestamp: utcToZonedTime(parseISO(timestamp), "America/Los_Angeles"),
+    timestamp: formattedDate,
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,
   };
