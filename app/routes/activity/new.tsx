@@ -25,7 +25,7 @@ export const loader = async ({ request }: LoaderArgs) => {
   };
 };
 
-export const action = async ({ request, params }: ActionArgs) => {
+export const action = async ({ request }: ActionArgs) => {
   const user = await getUser(request);
   if (!user) {
     return json({ errors: ["Not authorized"] }, { status: 401 });
@@ -34,6 +34,7 @@ export const action = async ({ request, params }: ActionArgs) => {
   const formData = await request.formData();
   const timestamp = formData.get("timestamp") as string;
   const notes = formData.get("notes");
+  const type = formData.get("type");
 
   const metadata: Record<any, any> = {};
   let hasMetaData = false;
@@ -47,7 +48,7 @@ export const action = async ({ request, params }: ActionArgs) => {
   const date = parseISO(timestamp);
 
   const data = {
-    type: params.type,
+    type,
     timestamp: zonedTimeToUtc(date, "America/Los_Angeles"),
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,

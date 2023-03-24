@@ -69,6 +69,8 @@ function ActivityForm({ type }: ActivityFormProps) {
 
   return (
     <Form method="post">
+      <input type="hidden" name="type" value={type} readOnly />
+
       <DateTimePicker id="timestamp" required />
 
       {metaFields?.map((field) => {

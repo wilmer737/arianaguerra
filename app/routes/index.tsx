@@ -1,6 +1,6 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData } from "@remix-run/react";
 import { DateTime } from "luxon";
 
 import Layout from "~/components/Layout";
@@ -15,7 +15,6 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 
   const dateFilter = params.date ?? new Date().toISOString().split("T")[0];
-  console.log(params.date);
 
   const activities = await getActivityByChildId(
     user.children[0].id,
@@ -66,6 +65,15 @@ function Home() {
                     DateTime.fromISO(activity.timestamp).toJSDate()
                   )}
                 </p>
+
+                <Form method="delete" action={`/activity/${activity.id}`}>
+                  <button
+                    type="submit"
+                    className="bg-red-400 px-4 py-2 text-white"
+                  >
+                    Delete
+                  </button>
+                </Form>
               </div>
             );
           })}
