@@ -1,4 +1,4 @@
-import { useParams } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { z } from "zod";
@@ -11,15 +11,21 @@ import ActivityForm from "~/components/forms/activity/form";
 import { validator } from "~/components/forms/activity/validator";
 import { getUser } from "~/session.server";
 
-export const loader = async ({ params }: LoaderArgs) => {
-  if (!params.type || !Object.values(activityTypes).includes(params.type)) {
+export const loader = async ({ request }: LoaderArgs) => {
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
+  const type = searchParams.get("type");
+
+  if (!type || !Object.values(activityTypes).includes(type)) {
     throw new Response("Not Found", { status: 404 });
   }
 
-  return {};
+  return {
+    type,
+  };
 };
 
-export const action = async ({ request, params }: ActionArgs) => {
+export const action = async ({ request }: ActionArgs) => {
   const user = await getUser(request);
   if (!user) {
     return json({ errors: ["Not authorized"] }, { status: 401 });
@@ -28,6 +34,7 @@ export const action = async ({ request, params }: ActionArgs) => {
   const formData = await request.formData();
   const timestamp = formData.get("timestamp") as string;
   const notes = formData.get("notes");
+  const type = formData.get("type");
 
   const metadata: Record<any, any> = {};
   let hasMetaData = false;
@@ -39,17 +46,10 @@ export const action = async ({ request, params }: ActionArgs) => {
   }
 
   const date = parseISO(timestamp);
-  // eslint-disable-next-line no-console
-  console.log("date", date);
-
-  const formattedDate = zonedTimeToUtc(date, "America/Los_Angeles");
-
-  // eslint-disable-next-line no-console
-  console.log("formattedDate", formattedDate);
 
   const data = {
-    type: params.type,
-    timestamp: formattedDate,
+    type,
+    timestamp: zonedTimeToUtc(date, "America/Los_Angeles"),
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,
   };
@@ -71,8 +71,8 @@ export const action = async ({ request, params }: ActionArgs) => {
 };
 
 function ActivityTypeRoute() {
-  const params = useParams();
-  const type = params.type as string;
+  const data = useLoaderData<typeof loader>();
+  const type = data.type;
 
   return (
     <Layout>

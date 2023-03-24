@@ -1,5 +1,6 @@
 import type { Activity } from "@prisma/client";
 import { prisma } from "~/db.server";
+import { add } from "date-fns";
 
 export type { Activity } from "@prisma/client";
 
@@ -13,15 +14,22 @@ export const activityTypes = {
   OTHER: "OTHER",
 };
 
-export function getActivityByChildId(childId: string) {
+export async function getActivityByChildId(childId: string, date: Date) {
   return prisma.activity.findMany({
+    orderBy: {
+      timestamp: "desc",
+    },
     where: {
       childId,
+      timestamp: {
+        gte: date,
+        lt: add(date, { days: 1 }),
+      },
     },
   });
 }
 
-export function createActivity(
+export async function createActivity(
   childId: string,
   activity: Pick<Activity, "notes" | "type" | "timestamp">
 ) {
@@ -29,6 +37,14 @@ export function createActivity(
     data: {
       ...activity,
       childId,
+    },
+  });
+}
+
+export async function deleteActivity(id: string) {
+  return prisma.activity.delete({
+    where: {
+      id,
     },
   });
 }

@@ -1,33 +1,69 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import { DateTime } from "luxon";
+import { format, add, sub } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
+import {
+  BsFillArrowLeftSquareFill,
+  BsFillArrowRightSquareFill,
+} from "react-icons/bs";
+import { parseISO } from "date-fns";
 
 import Layout from "~/components/Layout";
+import ActivityList from "~/components/ActivityList";
+
 import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
-import humanizeConstant from "~/utils/humanizeConstant";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request, params }: LoaderArgs) => {
   const user = await requireUser(request);
-
   if (!user.children || user.children.length === 0) {
     return redirect("/child/new");
   }
 
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  const date = searchParams.get("date");
+  if (!date) {
+    return redirect(`/?date=${DateTime.local().toISODate()}`);
+  }
+
+  const dateFilter = parseISO(date);
+  const activities = await getActivityByChildId(
+    user.children[0].id,
+    zonedTimeToUtc(dateFilter, "America/Los_Angeles")
+  );
+
   return json({
     // todo:later find a way to select and save the child
     child: user.children[0],
-    activities: await getActivityByChildId(user.children[0].id),
+    activities,
+    date: dateFilter,
   });
 };
 
 function Home() {
-  const { child, activities } = useLoaderData<typeof loader>();
+  const { child, activities, date } = useLoaderData<typeof loader>();
 
   const fullName = `${child.firstName} ${child.lastName}`;
+  const d = new Date(date);
+
+  const title = (
+    <div className="flex items-center justify-center gap-2">
+      <Link to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}>
+        <BsFillArrowLeftSquareFill color="green" />
+      </Link>
+      <span>{format(d, "MM-dd-y")}</span>
+
+      <Link to={`/?date=${format(add(d, { days: 1 }), "y-MM-dd")}`}>
+        <BsFillArrowRightSquareFill color="green" />
+      </Link>
+    </div>
+  );
+
   return (
-    <Layout title="Today">
+    <Layout title={title}>
       <div className="flex flex-col items-center justify-center">
         <img
           src={child.imgUrl || "ariana_sono.jpg"}
@@ -39,32 +75,7 @@ function Home() {
           <h2 className="text-l">Latest Activity</h2>
         </div>
 
-        <div className="h-96 w-full overflow-y-scroll">
-          {activities.map((activity) => {
-            // eslint-disable-next-line no-console
-            console.log("activity", activity);
-
-            const formatter = Intl.DateTimeFormat([], {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "numeric",
-              timeZone: "America/Los_Angeles",
-            });
-
-            return (
-              <div key={activity.id}>
-                <p className="font-bold">{humanizeConstant(activity.type)}</p>
-                <p>
-                  {formatter.format(
-                    DateTime.fromISO(activity.timestamp).toJSDate()
-                  )}
-                </p>
-              </div>
-            );
-          })}
-        </div>
+        <ActivityList activities={activities} />
       </div>
     </Layout>
   );
