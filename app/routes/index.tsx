@@ -10,16 +10,23 @@ import humanizeConstant from "~/utils/humanizeConstant";
 
 export const loader = async ({ request, params }: LoaderArgs) => {
   const user = await requireUser(request);
-  const filterDate = new Date(params.date ?? Date.now());
-
   if (!user.children || user.children.length === 0) {
     return redirect("/child/new");
   }
 
+  const dateFilter = params.date ?? new Date().toISOString().split("T")[0];
+  console.log(params.date);
+
+  const activities = await getActivityByChildId(
+    user.children[0].id,
+    dateFilter
+  );
+
+  console.log(activities);
   return json({
     // todo:later find a way to select and save the child
     child: user.children[0],
-    activities: await getActivityByChildId(user.children[0].id),
+    activities,
   });
 };
 
@@ -42,9 +49,6 @@ function Home() {
 
         <div className="h-96 w-full overflow-y-scroll">
           {activities.map((activity) => {
-            // eslint-disable-next-line no-console
-            console.log("activity", activity);
-
             const formatter = Intl.DateTimeFormat([], {
               weekday: "short",
               month: "short",

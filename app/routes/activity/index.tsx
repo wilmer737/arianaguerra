@@ -113,7 +113,7 @@ function ActivityRoute() {
               className="flex basis-28 flex-col items-center"
             >
               <Link
-                to={`/activity/${activity.type}`}
+                to={`/activity/new?type=${activity.type}`}
                 className={`flex h-16 w-16 items-center justify-center rounded-full py-2 px-4 text-white ${color}}`}
               >
                 <Icon name={activity.icon} label={label} />
