@@ -3,7 +3,7 @@ import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { DateTime } from "luxon";
 import { format, add, sub } from "date-fns";
-import { zonedTimeToUtc } from "date-fns-tz";
+import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
@@ -29,10 +29,10 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return redirect(`/?date=${DateTime.local().toISODate()}`);
   }
 
-  const dateFilter = parseISO(date);
+  const dateFilter = zonedTimeToUtc(parseISO(date), "America/Los_Angeles");
   const activities = await getActivityByChildId(
     user.children[0].id,
-    zonedTimeToUtc(dateFilter, "America/Los_Angeles")
+    dateFilter
   );
 
   return json({
@@ -47,7 +47,7 @@ function Home() {
   const { child, activities, date } = useLoaderData<typeof loader>();
 
   const fullName = `${child.firstName} ${child.lastName}`;
-  const d = new Date(date);
+  const d = utcToZonedTime(date, "America/Los_Angeles");
 
   const title = (
     <div className="flex items-center justify-center gap-2">
