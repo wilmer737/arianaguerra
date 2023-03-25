@@ -29,6 +29,14 @@ export async function getActivityByChildId(childId: string, date: Date) {
   });
 }
 
+export async function getActivityById(id: string) {
+  return prisma.activity.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
 export async function createActivity(
   childId: string,
   activity: Pick<Activity, "notes" | "type" | "timestamp">
