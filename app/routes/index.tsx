@@ -51,13 +51,19 @@ function Home() {
 
   const title = (
     <div className="flex items-center justify-center gap-2">
-      <Link to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}>
-        <BsFillArrowLeftSquareFill color="green" />
+      <Link
+        to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}
+        className="bg-teal-500"
+      >
+        <BsFillArrowLeftSquareFill />
       </Link>
       <span>{format(d, "MM-dd-y")}</span>
 
-      <Link to={`/?date=${format(add(d, { days: 1 }), "y-MM-dd")}`}>
-        <BsFillArrowRightSquareFill color="green" />
+      <Link
+        to={`/?date=${format(add(d, { days: 1 }), "y-MM-dd")}`}
+        className="bg-teal-500"
+      >
+        <BsFillArrowRightSquareFill />
       </Link>
     </div>
   );
@@ -70,8 +76,8 @@ function Home() {
           className="h-32 w-32 rounded-full border-4 border-emerald-600 object-cover"
           alt={fullName}
         />
-        <div className="p-2 text-lg">{fullName}</div>
-        <div className="h-12 w-full rounded-md border-2 border-blue-500 bg-blue-400 py-1 px-2 text-white">
+        <div className="p-2 text-lg text-white">{fullName}</div>
+        <div className="flex h-12 w-full items-center rounded-md border-2 border-teal-700 bg-teal-500 py-1 px-2 text-white">
           <h2 className="text-l">Latest Activity</h2>
         </div>
 

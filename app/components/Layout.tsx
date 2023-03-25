@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link, Form } from "@remix-run/react";
+import { AiOutlinePlus } from "react-icons/ai";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -11,7 +12,7 @@ function ProfileButton() {
   return (
     <Form method="post" action="/logout">
       <button
-        className="absolute top-2 right-2 rounded bg-emerald-600 py-1 px-2 text-sm text-white hover:bg-emerald-700"
+        className="absolute top-2 right-2 rounded bg-white py-1 px-2 text-sm text-teal-500 hover:bg-teal-100"
         type="submit"
       >
         Logout
@@ -22,7 +23,7 @@ function ProfileButton() {
 
 function Footer() {
   return (
-    <footer className="fixed bottom-0 right-0 left-0 bg-emerald-600 py-2 text-center text-sm font-bold text-white">
+    <footer className="fixed bottom-0 right-0 left-0 bg-white py-2 text-center text-sm font-bold text-teal-500">
       <nav className="flex items-center justify-evenly">
         <Link to="/">Home</Link>
 
@@ -31,9 +32,9 @@ function Footer() {
         <Link to="/activity">
           <button
             type="button"
-            className="h-12 w-12 rounded-full border-none bg-emerald-400 text-white"
+            className="flex h-12 w-12 items-center justify-center rounded-full border-none bg-teal-500 text-2xl"
           >
-            +
+            <AiOutlinePlus color="white" />
           </button>
         </Link>
         <Link to="/">Children</Link>
@@ -53,7 +54,7 @@ const Layout: React.FC<LayoutProps> = ({
       <ProfileButton />
 
       <header className="m-8 rounded-md">
-        <h1 className="text-center text-2xl">{title}</h1>
+        <h1 className="text-center text-2xl text-white">{title}</h1>
       </header>
 
       <div className="ml-8 mr-8 flex-grow">{children}</div>

@@ -4,13 +4,15 @@ import type {
   ActionArgs,
 } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 
-import { deleteActivity } from "~/models/activity.server";
+import Layout from "~/components/Layout";
+import { deleteActivity, getActivityById } from "~/models/activity.server";
 
 import { requireUserId } from "~/session.server";
 
-type Methods = "DELETE" | "POST";
+type Methods = "DELETE";
 
 const deleteHandler = async ({ params }: ActionArgs) => {
   const id = params.id;
@@ -20,11 +22,8 @@ const deleteHandler = async ({ params }: ActionArgs) => {
   return redirect("/");
 };
 
-const postHandler = async ({ params }: ActionArgs) => {};
-
 const handlers = {
   DELETE: deleteHandler,
-  POST: postHandler,
 };
 
 export const action: ActionFunction = async (ctx) => {
@@ -38,6 +37,28 @@ export const action: ActionFunction = async (ctx) => {
   return handler(ctx);
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return {};
+export const loader: LoaderFunction = async ({ request, params }) => {
+  const id = params.id;
+  invariant(id, "id is required");
+
+  await requireUserId(request);
+
+  const activity = await getActivityById(id);
+  return {
+    activity,
+  };
 };
+
+function Activity() {
+  const data = useLoaderData<typeof loader>();
+
+  return (
+    <Layout>
+      <h1>{data.activity.type}</h1>
+      <p>{data.activity.timestamp}</p>
+      <p>{data.activity.notes}</p>
+    </Layout>
+  );
+}
+
+export default Activity;
