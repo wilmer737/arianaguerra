@@ -86,7 +86,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-white"
             >
               Email address
             </label>
@@ -114,7 +114,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-white"
             >
               Password
             </label>
@@ -140,7 +140,7 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-emerald-500  py-2 px-4 text-white hover:bg-emerald-600 focus:bg-emerald-400"
+            className="w-full rounded bg-teal-500  py-2 px-4 text-white hover:bg-emerald-600 focus:bg-emerald-400"
           >
             Log in
           </button>
@@ -154,15 +154,15 @@ export default function LoginPage() {
               />
               <label
                 htmlFor="remember"
-                className="ml-2 block text-sm text-gray-900"
+                className="ml-2 block text-sm text-white"
               >
                 Remember me
               </label>
             </div>
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-sm text-white">
               Don't have an account?{" "}
               <Link
-                className="text-blue-500 underline"
+                className="text-teal-500 underline"
                 to={{
                   pathname: "/join",
                   search: searchParams.toString(),
