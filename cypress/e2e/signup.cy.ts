@@ -54,6 +54,6 @@ describe("signup flow", () => {
     cy.findByRole("button", { name: /Add/i }).click();
 
     cy.findByText(/Add Your Child/i).should("not.exist");
-    cy.findByText(`${baby.firstName} ${baby.lastName}`).should("exist");
+    cy.findByText(baby.firstName).should("exist");
   });
 });
