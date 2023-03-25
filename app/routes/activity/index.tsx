@@ -69,34 +69,6 @@ export const loader: LoaderFunction = async ({ request }) => {
   return json(data);
 };
 
-// export const action: ActionFunction = async ({ request }: ActionArgs) => {
-//   const user = await requireUser(request);
-//   const childId = user.children[0].id;
-
-//   const formData = await request.formData();
-//   const type = formData.get("type") as string;
-//   const notes = formData.get("notes") as string;
-
-//   // const metadataFields = [];
-//   // for (const entry of formData.entries()) {
-//   //   const [key, value] = entry;
-//   //   if (key.includes("meta.")) {
-//   //     metadataFields.push({
-//   //       [key.replace("meta.", "")]: value,
-//   //     });
-//   //   }
-//   // }
-
-//   for (const entry of formData.entries()) {
-//     const [key, value] = entry;
-//     console.log(key, value);
-//   }
-//   // await createActivity(childId, { notes, type, timestamp: new Date() });
-
-//   // return redirect("/");
-//   return {};
-// };
-
 function ActivityRoute() {
   const data = useLoaderData<LoaderData>();
 
@@ -119,7 +91,7 @@ function ActivityRoute() {
                 <Icon name={activity.icon} label={label} />
               </Link>
 
-              <div className="text-sm">{label}</div>
+              <div className="mt-2 text-sm text-white">{label}</div>
             </div>
           );
         })}

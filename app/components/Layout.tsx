@@ -12,7 +12,7 @@ function ProfileButton() {
   return (
     <Form method="post" action="/logout">
       <button
-        className="absolute top-2 right-2 rounded bg-white py-1 px-2 text-sm text-teal-500 hover:bg-teal-100"
+        className="rounded bg-white py-1 px-2 text-sm text-teal-500 hover:bg-teal-100"
         type="submit"
       >
         Logout
@@ -23,7 +23,7 @@ function ProfileButton() {
 
 function Footer() {
   return (
-    <footer className="fixed bottom-0 right-0 left-0 bg-white py-2 text-center text-sm font-bold text-teal-500">
+    <footer className="fixed bottom-0 right-0 left-0 border-t-2 bg-white py-2 text-center text-sm font-bold text-teal-500">
       <nav className="flex items-center justify-evenly">
         <Link to="/">Home</Link>
 
@@ -51,10 +51,11 @@ const Layout: React.FC<LayoutProps> = ({
 }) => {
   return (
     <div className="relative flex h-full flex-col">
-      <ProfileButton />
-
-      <header className="m-8 rounded-md">
-        <h1 className="text-center text-2xl text-white">{title}</h1>
+      <header className="flex h-16 justify-center rounded-md p-4">
+        <h1 className="text-2xl text-white">{title}</h1>
+        <div className="absolute right-2 top-4">
+          <ProfileButton />
+        </div>
       </header>
 
       <div className="ml-8 mr-8 flex-grow">{children}</div>

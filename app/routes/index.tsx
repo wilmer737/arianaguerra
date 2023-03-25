@@ -50,7 +50,7 @@ function Home() {
   const d = utcToZonedTime(date, "America/Los_Angeles");
 
   const title = (
-    <div className="flex items-center justify-center gap-2">
+    <div className="text-md flex items-center gap-2">
       <Link
         to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}
         className="bg-teal-500"
@@ -73,10 +73,12 @@ function Home() {
       <div className="flex flex-col items-center justify-center">
         <img
           src={child.imgUrl || "ariana_sono.jpg"}
-          className="h-32 w-32 rounded-full border-4 border-emerald-600 object-cover"
+          className="h-52 w-52 rounded-full border-4 object-cover"
           alt={fullName}
         />
-        <div className="p-2 text-lg text-white">{fullName}</div>
+        <div className="p-2 font-['Arial_Black'] text-3xl text-white">
+          {child.firstName}
+        </div>
         <div className="flex h-12 w-full items-center rounded-md border-2 border-teal-700 bg-teal-500 py-1 px-2 text-white">
           <h2 className="text-l">Latest Activity</h2>
         </div>
