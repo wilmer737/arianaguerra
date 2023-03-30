@@ -53,8 +53,7 @@ export const action = async ({ request }: ActionArgs) => {
     notes: notes,
     metadata: hasMetaData ? JSON.stringify(metadata) : undefined,
   };
-  // eslint-disable-next-line no-console
-  console.log("data", data);
+
   let validatedData;
   try {
     validatedData = validator.parse(data);

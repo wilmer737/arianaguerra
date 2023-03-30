@@ -72,7 +72,7 @@ function Home() {
     <Layout title={title}>
       <div className="flex flex-col items-center justify-center">
         <img
-          src={child.imgUrl || "ariana_sono.jpg"}
+          src={child.imgUrl || "ariana.jpg"}
           className="h-52 w-52 rounded-full border-4 object-cover"
           alt={fullName}
         />

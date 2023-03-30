@@ -6,10 +6,11 @@ import type {
 import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
+import { format } from "date-fns";
 
 import Layout from "~/components/Layout";
 import { deleteActivity, getActivityById } from "~/models/activity.server";
-
+import humanizeConstant from "~/utils/humanizeConstant";
 import { requireUserId } from "~/session.server";
 
 type Methods = "DELETE";
@@ -54,8 +55,10 @@ function Activity() {
 
   return (
     <Layout>
-      <h1>{data.activity.type}</h1>
-      <p>{data.activity.timestamp}</p>
+      <h1>{humanizeConstant(data.activity.type)}</h1>
+      <p>
+        {format(new Date(data.activity.timestamp), "MMM do yyyy hh:mm aaa")}
+      </p>
       <p>{data.activity.notes}</p>
     </Layout>
   );
