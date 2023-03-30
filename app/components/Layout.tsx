@@ -50,7 +50,7 @@ const Layout: React.FC<LayoutProps> = ({
   title = "Ariana Guerra",
 }) => {
   return (
-    <div className="relative flex h-full flex-col">
+    <div className="relative flex h-full flex-col text-white">
       <header className="flex h-16 justify-center rounded-md p-4">
         <h1 className="text-2xl text-white">{title}</h1>
         <div className="absolute right-2 top-4">

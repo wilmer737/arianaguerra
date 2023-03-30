@@ -1,4 +1,4 @@
-import { Form } from "@remix-run/react";
+import { Form, Link } from "@remix-run/react";
 import { DateTime } from "luxon";
 import { BsFillPencilFill, BsFillTrashFill, BsEyeFill } from "react-icons/bs";
 
@@ -41,7 +41,9 @@ function Activities(props: ActivitiesProps) {
             className="mb-2 flex rounded-sm border-2 border-teal-500 bg-white py-2 px-4"
           >
             <div className="grow">
-              <p className="font-bold">{humanizeConstant(activity.type)}</p>
+              <p className="font-bold text-slate-900">
+                {humanizeConstant(activity.type)}
+              </p>
               <p className="text-xs text-gray-600">
                 {formatter.format(
                   DateTime.fromISO(activity.timestamp).toJSDate()
@@ -51,7 +53,9 @@ function Activities(props: ActivitiesProps) {
             </div>
 
             <div className="flex items-center gap-1">
-              <BsEyeFill color="rgb(20 184 166)" />
+              <Link to={`/activity/${activity.id}`}>
+                <BsEyeFill color="rgb(20 184 166)" />
+              </Link>
               <BsFillPencilFill color="rgb(14 165 233)" />
               <Form
                 method="delete"
