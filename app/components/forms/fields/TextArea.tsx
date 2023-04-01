@@ -10,7 +10,7 @@ function TextArea({ label, ...htmlProps }: TextAreaProps) {
       </label>
       <div className="mt-1">
         <textarea
-          className="w-full rounded border border-teal-500 px-2 py-1 text-lg"
+          className="w-full rounded border border-teal-500 px-2 py-1 text-lg text-slate-900"
           {...htmlProps}
         />
       </div>

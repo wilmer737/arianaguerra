@@ -49,7 +49,7 @@ function Activities(props: ActivitiesProps) {
                   DateTime.fromISO(activity.timestamp).toJSDate()
                 )}
               </p>
-              <p>{activity.notes}</p>
+              <p className="text-slate-900">{activity.notes}</p>
             </div>
 
             <div className="flex items-center gap-1">
