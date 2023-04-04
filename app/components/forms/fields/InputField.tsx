@@ -7,22 +7,17 @@ interface FieldProps extends React.HTMLProps<HTMLInputElement> {
   errorMessage?: string;
 }
 
-function Field({
-  label,
-  id,
-  errorMessage,
-  ...htmlProps
-}: FieldProps) {
+function Field({ label, id, errorMessage, ...htmlProps }: FieldProps) {
   return (
     <div>
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+      <label htmlFor={id} className="block text-sm font-medium text-white">
         {label}
       </label>
       <div className="mt-1">
         <input
           id={id}
           name={htmlProps.name || id}
-          className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+          className="w-full rounded border border-gray-500 px-2 py-1 text-lg text-slate-900"
           {...htmlProps}
         />
         {errorMessage && (
