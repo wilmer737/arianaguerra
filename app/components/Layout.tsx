@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Link, Form } from "@remix-run/react";
 import { AiOutlinePlus } from "react-icons/ai";
+import { FaHome, FaChartBar, FaBaby, FaUserNinja } from "react-icons/fa";
 
 type LayoutProps = {
   children: React.ReactNode;
@@ -25,9 +26,15 @@ function Footer() {
   return (
     <footer className="fixed bottom-0 right-0 left-0 border-t-2 bg-white py-2 text-center text-sm font-bold text-teal-500">
       <nav className="flex items-center justify-evenly">
-        <Link to="/">Home</Link>
+        <Link to="/" className="flex flex-col items-center justify-center">
+          <FaHome className="text-xl" />
+          Home
+        </Link>
 
-        <Link to="/stats">Stats</Link>
+        <Link to="/stats" className="flex flex-col items-center justify-center">
+          <FaChartBar className="text-xl" />
+          Stats
+        </Link>
 
         <Link to="/activity">
           <button
@@ -37,8 +44,18 @@ function Footer() {
             <AiOutlinePlus color="white" />
           </button>
         </Link>
-        <Link to="/">Children</Link>
-        <Link to="/profile">User</Link>
+        <Link to="/" className="flex flex-col items-center justify-center">
+          <FaBaby className="text-xl" />
+          Children
+        </Link>
+
+        <Link
+          to="/profile"
+          className="flex flex-col items-center justify-center"
+        >
+          <FaUserNinja className="text-xl" />
+          User
+        </Link>
       </nav>
     </footer>
   );
