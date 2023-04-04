@@ -1,4 +1,5 @@
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
+
 import { json, redirect } from "@remix-run/node";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { z } from "zod";
@@ -10,6 +11,7 @@ import Layout from "~/components/Layout";
 import ActivityForm from "~/components/forms/activity/form";
 import { validator } from "~/components/forms/activity/validator";
 import { getUser } from "~/session.server";
+import ButtonComponent from "~/components/Button";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const url = new URL(request.url);
@@ -75,6 +77,11 @@ function ActivityTypeRoute() {
 
   return (
     <Layout>
+      <Link to="/activity">
+        <ButtonComponent width="auto" size="small" purpose="secondary">
+          Back
+        </ButtonComponent>
+      </Link>
       <ActivityForm type={type} />
     </Layout>
   );

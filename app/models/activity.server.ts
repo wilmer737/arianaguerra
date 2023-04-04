@@ -1,6 +1,6 @@
 import type { Activity } from "@prisma/client";
 import { prisma } from "~/db.server";
-import { add } from "date-fns";
+import { startOfDay, endOfDay } from "date-fns";
 
 export type { Activity } from "@prisma/client";
 
@@ -22,8 +22,8 @@ export async function getActivityByChildId(childId: string, date: Date) {
     where: {
       childId,
       timestamp: {
-        gte: date,
-        lt: add(date, { days: 1 }),
+        gte: startOfDay(date),
+        lt: endOfDay(date),
       },
     },
   });

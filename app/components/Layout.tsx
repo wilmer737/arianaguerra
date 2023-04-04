@@ -27,7 +27,7 @@ function Footer() {
       <nav className="flex items-center justify-evenly">
         <Link to="/">Home</Link>
 
-        <Link to="/">Stats</Link>
+        <Link to="/stats">Stats</Link>
 
         <Link to="/activity">
           <button
