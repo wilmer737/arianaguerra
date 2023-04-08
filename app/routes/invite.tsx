@@ -3,7 +3,7 @@ import { useLoaderData, Form } from "@remix-run/react";
 import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 
 import Button from "~/components/Button";
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import { requireUser } from "~/session.server";
 import type { Child } from "~/models/child.server";
 import Field from "~/components/forms/fields/InputField";

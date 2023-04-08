@@ -10,7 +10,7 @@ import { json } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 
 import InputField from "~/components/forms/fields/InputField";
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import { createChild } from "~/models/child.server";
 import { getUserId, requireUserId } from "~/session.server";
 import { isValidYYYYMM } from "~/utils/date";

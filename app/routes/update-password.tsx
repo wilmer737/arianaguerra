@@ -2,7 +2,7 @@ import { Form } from "@remix-run/react";
 import { json, redirect } from "@remix-run/node";
 import type { ActionFunction, LoaderFunction } from "@remix-run/node";
 
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import Field from "~/components/forms/fields/InputField";
 import Button from "~/components/Button";
 import { verifyLogin } from "~/models/user.server";

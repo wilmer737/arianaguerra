@@ -3,7 +3,7 @@ import { json } from "@remix-run/node";
 import type { LoaderFunction } from "@remix-run/node";
 
 import Icon from "~/components/Icon";
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import { activityTypes } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
 import { colorTextStyles } from "~/tailwind/utils";

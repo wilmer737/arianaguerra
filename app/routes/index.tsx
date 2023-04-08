@@ -10,7 +10,7 @@ import {
 } from "react-icons/bs";
 import { parseISO } from "date-fns";
 
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import ActivityList from "~/components/ActivityList";
 
 import { getActivityByChildId } from "~/models/activity.server";

@@ -8,7 +8,7 @@ import { useLoaderData } from "@remix-run/react";
 import invariant from "tiny-invariant";
 import { format } from "date-fns";
 
-import Layout from "~/components/Layout/Layout";
+import Layout from "~/components/Layout";
 import { deleteActivity, getActivityById } from "~/models/activity.server";
 import humanizeConstant from "~/utils/humanizeConstant";
 import { requireUserId } from "~/session.server";
