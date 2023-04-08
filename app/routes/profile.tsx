@@ -40,40 +40,42 @@ function ProfileRoute() {
   const { user } = data;
   return (
     <Layout>
-      <h2 className="text-lg font-bold">Profile</h2>
-      <Form method="post">
-        <Field
-          id="name"
-          name="name"
-          label="Name"
-          defaultValue={user.name ?? ""}
-          required
-        />
+      <div className="w-full">
+        <h2 className="text-lg font-bold text-white">Profile</h2>
+        <Form method="post">
+          <Field
+            id="name"
+            name="name"
+            label="Name"
+            defaultValue={user.name ?? ""}
+            required
+          />
 
-        <Field
-          id="email"
-          name="email"
-          label="Email"
-          defaultValue={user.email}
-          required
-        />
+          <Field
+            id="email"
+            name="email"
+            label="Email"
+            defaultValue={user.email}
+            required
+          />
 
-        <Button type="submit">Update Profile</Button>
-      </Form>
+          <Button type="submit">Update Profile</Button>
+        </Form>
 
-      <hr />
+        <hr />
 
-      <h2 className="text-lg font-bold">Password</h2>
-      <Link to="/update-password">
-        <Button type="button">Update Password</Button>
-      </Link>
+        <h2 className="text-lg font-bold text-white">Password</h2>
+        <Link to="/update-password">
+          <Button type="button">Update Password</Button>
+        </Link>
 
-      <hr />
+        <hr />
 
-      <h2 className="text-lg font-bold">Invite User</h2>
-      <Link to="/invite">
-        <Button type="button">Invite User</Button>
-      </Link>
+        <h2 className="text-lg font-bold text-white">Invite User</h2>
+        <Link to="/invite">
+          <Button type="button">Invite User</Button>
+        </Link>
+      </div>
     </Layout>
   );
 }

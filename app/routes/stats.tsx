@@ -8,6 +8,11 @@ import { requireUser } from "~/session.server";
 import { prisma } from "~/db.server";
 import StatsView from "~/components/Views/StatsView/StatsView";
 
+export const meta = {
+  title: "Stats",
+  description: "Stats",
+};
+
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request);
 

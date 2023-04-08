@@ -33,7 +33,7 @@ function Activities(props: ActivitiesProps) {
   }
 
   return (
-    <ul className="mt-4 mb-16 h-72 w-full overflow-y-scroll px-2">
+    <ul className="mt-4 w-full overflow-y-scroll px-2">
       {props.activities.map((activity) => {
         return (
           <li
