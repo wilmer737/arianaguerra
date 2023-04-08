@@ -10,7 +10,7 @@ import {
 } from "react-icons/bs";
 import { parseISO } from "date-fns";
 
-import Layout from "~/components/Layout";
+import Layout from "~/components/Layout/Layout";
 import ActivityList from "~/components/ActivityList";
 
 import { getActivityByChildId } from "~/models/activity.server";
@@ -70,7 +70,7 @@ function Home() {
 
   return (
     <Layout title={title}>
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-1 flex-col items-center">
         <img
           src={child.imgUrl || "ariana.jpg"}
           className="h-52 w-52 rounded-full border-4 object-cover"

@@ -1,4 +1,4 @@
-import Layout from "~/components/Layout";
+import Layout from "~/components/Layout/Layout";
 import Count from "~/components/Views/StatsView/Count";
 import type { CountProps } from "~/components/Views/StatsView/Count";
 

@@ -7,7 +7,7 @@ import { parseISO } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 
 import { activityTypes, createActivity } from "~/models/activity.server";
-import Layout from "~/components/Layout";
+import Layout from "~/components/Layout/Layout";
 import ActivityForm from "~/components/forms/activity/form";
 import { validator } from "~/components/forms/activity/validator";
 import { getUser } from "~/session.server";
