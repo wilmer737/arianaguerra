@@ -74,7 +74,7 @@ function ActivityRoute() {
 
   return (
     <Layout>
-      <div className="">
+      <div className="grid grid-cols-2">
         {data.activities.map((activity) => {
           const color = colorTextStyles[activity.color];
           const label = humanizeConstant(activity.type);
@@ -83,7 +83,7 @@ function ActivityRoute() {
             <div key={activity.type} className="flex flex-col items-center">
               <Link
                 to={`/activity/new?type=${activity.type}`}
-                className={`flex h-16 w-16 items-center justify-center rounded-full py-2 px-4 text-white ${color}}`}
+                className={`flex h-16 w-16 items-center justify-center rounded-full py-2 px-4 text-3xl text-white ${color}}`}
               >
                 <Icon name={activity.icon} label={label} />
               </Link>
