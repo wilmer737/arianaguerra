@@ -24,7 +24,7 @@ function MetaDataField(props: MetaDataFieldProps) {
                 placeholder="hours"
                 type="number"
                 id="hours"
-                name="meta[hours]"
+                name="meta.hours"
                 min="0"
               />
             </div>
@@ -36,7 +36,7 @@ function MetaDataField(props: MetaDataFieldProps) {
               placeholder="minutes"
               type="number"
               id="minutes"
-              name="meta[minutes]"
+              name="meta.minutes"
               min="0"
               max="59"
             />
@@ -64,7 +64,7 @@ function MetaDataField(props: MetaDataFieldProps) {
           placeholder={meta.placeholder}
           type={meta.type}
           id={meta.name}
-          name={`meta[${meta.name}]`}
+          name={`${meta.name}`}
         />
       </div>
     </div>
