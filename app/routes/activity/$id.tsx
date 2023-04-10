@@ -63,6 +63,8 @@ function MetadataDisplay({ metadata }: { metadata: Record<string, string> }) {
     <>
       <h2 className="text-xl">Additional Info</h2>
       {Object.entries(metadata).map(([key, value]) => {
+        if (!value) return null;
+
         return (
           <div key={key}>
             <h3 className="text-sm font-bold">{key}</h3>
