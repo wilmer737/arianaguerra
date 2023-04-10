@@ -77,12 +77,14 @@ function ActivityTypeRoute() {
 
   return (
     <Layout>
-      <Link to="/activity">
-        <ButtonComponent width="auto" size="small" purpose="secondary">
-          Back
-        </ButtonComponent>
-      </Link>
-      <ActivityForm type={type} />
+      <div>
+        <Link to="/activity">
+          <ButtonComponent width="auto" size="small" purpose="secondary">
+            Back
+          </ButtonComponent>
+        </Link>
+        <ActivityForm type={type} />
+      </div>
     </Layout>
   );
 }

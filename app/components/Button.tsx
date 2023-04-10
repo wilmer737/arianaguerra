@@ -24,7 +24,7 @@ const sizes = {
 
 const purposes = {
   primary: "bg-teal-500 hover:bg-teal-600 focus:bg-teal-400",
-  secondary: "bg-teal-200 hover:bg-teal-300 focus:bg-teal-100 text-slate-",
+  secondary: "bg-teal-900 hover:bg-teal-600 focus:bg-teal-100",
   tertiary: "bg-transparent hover:bg-teal-200 focus:bg-teal-100",
 };
 
