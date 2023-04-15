@@ -1,14 +1,12 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import { DateTime } from "luxon";
-import { format, add, sub } from "date-fns";
+import { format, add, sub, parseISO, startOfDay, endOfDay } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from "react-icons/bs";
-import { parseISO } from "date-fns";
 
 import Layout from "~/components/Layout";
 import ActivityList from "~/components/ActivityList";
@@ -22,24 +20,28 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     return redirect("/child/new");
   }
 
+  // todo: make this dynamic, probably based on the route
+  const child = user.children[0];
+
   const url = new URL(request.url);
   const searchParams = url.searchParams;
   const date = searchParams.get("date");
+
   if (!date) {
-    return redirect(`/?date=${DateTime.local().toISODate()}`);
+    const dateFilter = utcToZonedTime(new Date(), "America/Los_Angeles");
+    return redirect(`/?date=${format(dateFilter, "y-MM-dd")}`);
   }
 
   const dateFilter = zonedTimeToUtc(parseISO(date), "America/Los_Angeles");
-  const activities = await getActivityByChildId(
-    user.children[0].id,
-    dateFilter
-  );
+  const activities = await getActivityByChildId(user.children[0].id, {
+    gte: startOfDay(dateFilter),
+    lt: endOfDay(dateFilter),
+  });
 
   return json({
-    // todo:later find a way to select and save the child
-    child: user.children[0],
-    activities,
+    child,
     date: dateFilter,
+    activities,
   });
 };
 
