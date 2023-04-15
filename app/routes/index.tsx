@@ -1,7 +1,7 @@
 import type { LoaderArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import { format, add, sub, parseISO, startOfDay, endOfDay } from "date-fns";
+import { format, add, sub, parseISO } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
 import {
   BsFillArrowLeftSquareFill,
@@ -33,15 +33,16 @@ export const loader = async ({ request, params }: LoaderArgs) => {
   }
 
   const dateFilter = zonedTimeToUtc(parseISO(date), "America/Los_Angeles");
-  const activities = await getActivityByChildId(user.children[0].id, {
-    gte: startOfDay(dateFilter),
-    lt: endOfDay(dateFilter),
+
+  const activities = await getActivityByChildId(child.id, {
+    gte: dateFilter,
+    lt: add(dateFilter, { days: 1 }),
   });
 
   return json({
     child,
-    date: dateFilter,
     activities,
+    date: dateFilter,
   });
 };
 

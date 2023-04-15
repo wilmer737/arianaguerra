@@ -15,7 +15,7 @@ export const activityTypes = {
 
 export async function getActivityByChildId(
   childId: string,
-  dateFilter: Prisma.ActivityWhereInput["timestamp"]
+  dateFilter?: Prisma.ActivityWhereInput["timestamp"]
 ) {
   return prisma.activity.findMany({
     orderBy: {
