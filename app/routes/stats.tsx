@@ -1,8 +1,8 @@
-import { json } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import type { LoaderFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import { zonedTimeToUtc } from "date-fns-tz";
-import { startOfDay, endOfDay } from "date-fns";
+import { zonedTimeToUtc, utcToZonedTime } from "date-fns-tz";
+import { add, format, parseISO } from "date-fns";
 
 import { requireUser } from "~/session.server";
 import { prisma } from "~/db.server";
@@ -16,15 +16,24 @@ export const meta = {
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request);
 
-  const dateFilter = zonedTimeToUtc(new Date(), "America/Los_Angeles");
+  const url = new URL(request.url);
+  const searchParams = url.searchParams;
+  const date = searchParams.get("date");
+
+  if (!date) {
+    const dateFilter = utcToZonedTime(new Date(), "America/Los_Angeles");
+    return redirect(`/stats?date=${format(dateFilter, "y-MM-dd")}`);
+  }
+
+  const dateFilter = zonedTimeToUtc(parseISO(date), "America/Los_Angeles");
 
   const data = await prisma.activity.groupBy({
     by: ["type"],
     where: {
       childId: user.children[0].id,
       timestamp: {
-        gte: startOfDay(dateFilter),
-        lt: endOfDay(dateFilter),
+        gte: dateFilter,
+        lt: add(dateFilter, { days: 1 }),
       },
     },
     _count: {
