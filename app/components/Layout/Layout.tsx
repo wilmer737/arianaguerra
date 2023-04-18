@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="flex h-full flex-col">
       <Header title={title} />
-      <main className="flex min-h-0 w-full flex-1 justify-center px-8">
+      <main className="flex min-h-0 w-full flex-1 flex-col items-center overflow-x-hidden overflow-y-scroll px-8">
         {children}
       </main>
       {withFooter && <Footer />}

@@ -1,11 +1,11 @@
 import React from "react";
 
-type ButtonProps = React.DetailedHTMLProps<
+type ButtonHTMLProps = React.DetailedHTMLProps<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
   HTMLButtonElement
 >;
 
-interface ButtonComponentProps extends ButtonProps {
+interface ButtonProps extends ButtonHTMLProps {
   purpose?: "primary" | "secondary" | "tertiary";
   width?: "full" | "auto";
   size?: "small" | "medium" | "large";
@@ -28,7 +28,7 @@ const purposes = {
   tertiary: "bg-transparent hover:bg-teal-200 focus:bg-teal-100",
 };
 
-function ButtonComponent(props: ButtonComponentProps) {
+function Button(props: ButtonProps) {
   const {
     children,
     purpose = "primary",
@@ -51,4 +51,4 @@ function ButtonComponent(props: ButtonComponentProps) {
   );
 }
 
-export default ButtonComponent;
+export default Button;

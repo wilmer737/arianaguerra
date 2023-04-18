@@ -104,7 +104,7 @@ export default function LoginPage() {
                 className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
               />
               {actionData?.errors?.email && (
-                <div className="pt-1 text-red-700" id="email-error">
+                <div className="pt-1 text-red-400" id="email-error">
                   {actionData.errors.email}
                 </div>
               )}
@@ -130,7 +130,7 @@ export default function LoginPage() {
                 className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
               />
               {actionData?.errors?.password && (
-                <div className="pt-1 text-red-700" id="password-error">
+                <div className="pt-1 text-red-400" id="password-error">
                   {actionData.errors.password}
                 </div>
               )}

@@ -73,10 +73,10 @@ function Home() {
 
   return (
     <Layout title={title}>
-      <div className="flex flex-1 flex-col items-center">
+      <div className="flex flex-1 flex-col items-center overflow-hidden">
         <img
           src={child.imgUrl || "ariana.jpg"}
-          className="h-52 w-52 rounded-full border-4 object-cover"
+          className="h-44 w-44 rounded-full border-4 object-cover"
           alt={fullName}
         />
         <div className="p-2 font-['Arial_Black'] text-3xl text-white">
