@@ -1,6 +1,6 @@
 import { Link } from "@remix-run/react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { FaHome, FaChartBar, FaBaby, FaUserNinja } from "react-icons/fa";
+import { FaHome, FaChartBar, FaUserNinja, FaTrophy } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -24,9 +24,12 @@ export function Footer() {
             <AiOutlinePlus color="white" />
           </button>
         </Link>
-        <Link to="/" className="flex flex-col items-center justify-center">
-          <FaBaby className="text-xl" />
-          Children
+        <Link
+          to="/milestones"
+          className="flex flex-col items-center justify-center"
+        >
+          <FaTrophy className="text-xl" />
+          Milestones
         </Link>
 
         <Link

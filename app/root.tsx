@@ -1,4 +1,4 @@
-import type { LinksFunction, LoaderArgs, MetaFunction } from "@remix-run/node";
+import type { LinksFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import {
   Links,
@@ -12,6 +12,8 @@ import {
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
+
+const isProd = process.env.NODE_ENV === "production";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -48,10 +50,27 @@ export default function App() {
 
 export function ErrorBoundary({ error }: { error: Error }) {
   return (
-    <div>
-      <h1>{error.name}</h1>
-      <pre>{error.message}</pre>
-    </div>
+    <html>
+      <head>
+        <title>Oops!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <div>
+          {isProd ? (
+            <div>
+              <p>Something went wrong.</p>
+            </div>
+          ) : (
+            <>
+              <h1>{error.name}</h1>
+              <pre>{error.message}</pre>
+            </>
+          )}
+        </div>
+      </body>
+    </html>
   );
 }
 
