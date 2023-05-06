@@ -1,5 +1,4 @@
 import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import Chart from "chart.js/auto";
 import type { ChartTypeRegistry } from "chart.js/auto";
 
@@ -8,10 +7,7 @@ function useChart(
   data: number[],
   labels: string[]
 ) {
-  const id = React.useMemo(() => {
-    const uid = uuidv4();
-    return uid;
-  }, []);
+  const id = React.useId();
 
   React.useEffect(() => {
     const canvasDom = document.getElementById(id);
