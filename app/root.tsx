@@ -31,7 +31,10 @@ export async function loader({ request }: LoaderArgs) {
 
 export default function App() {
   return (
-    <html lang="en" className="h-full bg-teal-700">
+    <html
+      lang="en"
+      className="h-full bg-gradient-to-br from-teal-400 to-teal-700"
+    >
       <head>
         <Meta />
         <Links />
