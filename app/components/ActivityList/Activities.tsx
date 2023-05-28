@@ -5,7 +5,7 @@ import { BsFillPencilFill, BsFillTrashFill, BsEyeFill } from "react-icons/bs";
 import type { Activity } from "~/models/activity.server";
 import humanizeConstant from "~/utils/humanizeConstant";
 
-type ActivityWithStringDates = Omit<
+export type ActivityWithStringDates = Omit<
   Activity,
   "createdAt" | "updatedAt" | "timestamp"
 > & {
