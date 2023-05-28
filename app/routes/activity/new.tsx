@@ -12,8 +12,11 @@ import ActivityForm from "~/components/forms/activity/form";
 import { validator } from "~/components/forms/activity/validator";
 import { getUser } from "~/session.server";
 import ButtonComponent from "~/components/Button";
+import { requireUser } from "~/session.server";
 
 export const loader = async ({ request }: LoaderArgs) => {
+  await requireUser(request);
+
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
   const type = searchParams.get("type");
