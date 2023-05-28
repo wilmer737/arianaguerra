@@ -1,19 +1,19 @@
-import { Form, useActionData } from "@remix-run/react";
+import { Form } from "@remix-run/react";
 import Field from "~/components/forms/fields/InputField";
 import Button from "~/components/Button";
 
 interface LoginFormProps {
   redirectTo?: string;
+  formErrors?: Record<string, string>;
 }
 
 export function LoginForm(props: LoginFormProps) {
-  const { redirectTo = "/" } = props;
-  const data = useActionData();
+  const { redirectTo = "/", formErrors } = props;
 
   return (
     <Form method="post" className="space-y-6">
       <Field
-        label="email"
+        label="Email address"
         type="email"
         required
         id="email"
@@ -21,18 +21,18 @@ export function LoginForm(props: LoginFormProps) {
         placeholder="your@email.com"
         autoFocus
         autoComplete="email"
-        errorMessage={data?.errors?.email}
+        errorMessage={formErrors?.email}
       />
 
       <Field
-        label="password"
+        label="Password"
         type="password"
         required
         id="password"
         name="password"
         placeholder="password"
         autoComplete="current-password"
-        errorMessage={data?.errors?.password}
+        errorMessage={formErrors?.password}
       />
 
       <input type="hidden" name="redirectTo" value={redirectTo} />
