@@ -9,7 +9,9 @@ import {
 } from "react-icons/bs";
 
 import Layout from "~/components/Layout";
-import ActivityList from "~/components/ActivityList";
+import ActivityList, {
+  type ActivityWithStringDates,
+} from "~/components/ActivityList";
 
 import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser } from "~/session.server";
@@ -45,6 +47,29 @@ export const loader = async ({ request, params }: LoaderArgs) => {
     date: dateFilter,
   });
 };
+
+function Summary({ activities }: { activities: ActivityWithStringDates[] }) {
+  const getOunces = () => {
+    return activities
+      .filter((a) => a.type === "FEEDING")
+      .reduce((acc, curr) => {
+        if (!curr.metadata) return acc;
+        const meta = JSON.parse(curr.metadata);
+
+        const amount = Number(meta.amount);
+        if (Number.isNaN(amount)) return acc;
+
+        return acc + amount;
+      }, 0);
+  };
+
+  return (
+    <div className="w-full rounded-md bg-white p-4">
+      <h2 className="text-lg">Today's Activity</h2>
+      <p>Feeding: {getOunces()} ounces</p>
+    </div>
+  );
+}
 
 function Home() {
   const { child, activities, date } = useLoaderData<typeof loader>();
@@ -82,10 +107,7 @@ function Home() {
         <div className="p-2 font-['Arial_Black'] text-3xl text-white">
           {child.firstName}
         </div>
-        <div className="flex h-12 w-full items-center rounded-md border-2 border-teal-700 bg-teal-500 py-1 px-2 text-white">
-          <h2 className="text-l">Latest Activity</h2>
-        </div>
-
+        <Summary activities={activities} />
         <ActivityList activities={activities} />
       </div>
     </Layout>
