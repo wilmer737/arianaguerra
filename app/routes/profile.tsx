@@ -35,7 +35,7 @@ export const action: ActionFunction = async ({ request }) => {
       "Set-Cookie": await setGlobalMessage(
         request,
         "success",
-        "Profile updated!"
+        `Profile updated, ${name}!`
       ),
     },
   });

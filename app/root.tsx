@@ -11,6 +11,7 @@ import {
   useCatch,
 } from "@remix-run/react";
 
+import { Toast } from "~/components/Toast";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { sessionStorage, getSession } from "./session.server";
 
@@ -41,6 +42,8 @@ export async function loader({ request }: LoaderArgs) {
 }
 
 export default function App() {
+  const data = useLoaderData();
+
   return (
     <html
       lang="en"
@@ -55,6 +58,7 @@ export default function App() {
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
+        <Toast message={data.message} />
       </body>
     </html>
   );
