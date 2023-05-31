@@ -5,6 +5,7 @@ import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 import { requireUser, setGlobalMessage } from "~/session.server";
 import { updateUser } from "~/models/user.server";
 import { ProfileView } from "~/components/Views/ProfileView";
+import { profileValidator } from "~/components/forms/profile/validator";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request);
@@ -20,15 +21,23 @@ export const action: ActionFunction = async ({ request }) => {
   const name = formData.get("name");
   const email = formData.get("email");
 
-  if (!name || typeof name !== "string" || name.length === 0) {
-    return json({ errors: { name: "Name is required" } }, { status: 400 });
+  const validatedData = profileValidator.safeParse({
+    name,
+    email,
+  });
+
+  if (!validatedData.success) {
+    const tidyErrors = validatedData.error.errors.reduce(
+      (acc, error) => ({ ...acc, [error.path[0]]: error.message }),
+      {}
+    );
+    return json({ errors: tidyErrors }, { status: 400 });
   }
 
-  if (!email || typeof email !== "string" || email.length === 0) {
-    return json({ errors: { email: "Email is required" } }, { status: 400 });
-  }
-
-  await updateUser(user.id, { name, email });
+  await updateUser(user.id, {
+    name: validatedData.data.name,
+    email: validatedData.data.email,
+  });
 
   return redirect("/profile", {
     headers: {
