@@ -95,3 +95,22 @@ export async function logout(request: Request) {
     },
   });
 }
+
+export async function setGlobalMessage(
+  request: Request,
+  type: "success" | "error" | "notify",
+  message: string
+) {
+  const session = await getSession(request);
+  session.flash(`${type}Message`, message);
+
+  return sessionStorage.commitSession(session);
+}
+
+export async function getGlobalMessage(
+  request: Request,
+  type: "success" | "error" | "notify"
+) {
+  const session = await getSession(request);
+  return session.get(`${type}Message`);
+}

@@ -7,11 +7,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
   useCatch,
 } from "@remix-run/react";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
-import { getUser } from "./session.server";
+import { sessionStorage, getSession } from "./session.server";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -24,9 +25,19 @@ export const meta: MetaFunction = () => ({
 });
 
 export async function loader({ request }: LoaderArgs) {
-  return json({
-    user: await getUser(request),
-  });
+  const session = await getSession(request);
+  const message = session.get("successMessage");
+
+  return json(
+    {
+      message,
+    },
+    {
+      headers: {
+        "Set-Cookie": await sessionStorage.commitSession(session),
+      },
+    }
+  );
 }
 
 export default function App() {

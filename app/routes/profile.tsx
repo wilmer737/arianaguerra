@@ -1,12 +1,10 @@
 import { json, redirect } from "@remix-run/node";
-import { Link, Form, useLoaderData } from "@remix-run/react";
+import { useLoaderData } from "@remix-run/react";
 import type { LoaderFunction, ActionFunction } from "@remix-run/node";
 
-import Layout from "~/components/Layout";
-import Button from "~/components/Button";
-import { requireUser } from "~/session.server";
-import Field from "~/components/forms/fields/InputField";
+import { requireUser, setGlobalMessage } from "~/session.server";
 import { updateUser } from "~/models/user.server";
+import { ProfileView } from "~/components/Views/ProfileView";
 
 export const loader: LoaderFunction = async ({ request }) => {
   const user = await requireUser(request);
@@ -32,52 +30,21 @@ export const action: ActionFunction = async ({ request }) => {
 
   await updateUser(user.id, { name, email });
 
-  return redirect("/profile");
+  return redirect("/profile", {
+    headers: {
+      "Set-Cookie": await setGlobalMessage(
+        request,
+        "success",
+        "Profile updated!"
+      ),
+    },
+  });
 };
 
 function ProfileRoute() {
   const data = useLoaderData<typeof loader>();
   const { user } = data;
-  return (
-    <Layout>
-      <div className="w-full">
-        <h2 className="text-lg font-bold text-white">Profile</h2>
-        <Form method="post">
-          <Field
-            id="name"
-            name="name"
-            label="Name"
-            defaultValue={user.name ?? ""}
-            required
-          />
-
-          <Field
-            id="email"
-            name="email"
-            label="Email"
-            defaultValue={user.email}
-            required
-          />
-
-          <Button type="submit">Update Profile</Button>
-        </Form>
-
-        <hr />
-
-        <h2 className="text-lg font-bold text-white">Password</h2>
-        <Link to="/update-password">
-          <Button type="button">Update Password</Button>
-        </Link>
-
-        <hr />
-
-        <h2 className="text-lg font-bold text-white">Invite User</h2>
-        <Link to="/invite">
-          <Button type="button">Invite User</Button>
-        </Link>
-      </div>
-    </Layout>
-  );
+  return <ProfileView user={user} />;
 }
 
 export default ProfileRoute;
