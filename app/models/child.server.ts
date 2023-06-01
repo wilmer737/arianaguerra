@@ -16,3 +16,10 @@ export async function createChild(
     },
   });
 }
+
+export async function updateChild(childId: string, child: Partial<Child>) {
+  return prisma.child.update({
+    where: { id: childId },
+    data: child,
+  });
+}
