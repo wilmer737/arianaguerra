@@ -26,7 +26,7 @@ export function Toast({ message }: ToastProps) {
   }
 
   return (
-    <div className="fixed top-4 right-2 left-2 flex h-14 items-center justify-center rounded-md bg-white px-8 shadow-lg">
+    <div className="fixed top-4 right-2 left-2 flex h-14 items-center justify-center rounded-md border-2 border-teal-500 bg-white px-8 shadow-lg">
       {message}
     </div>
   );
