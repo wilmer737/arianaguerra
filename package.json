@@ -37,6 +37,7 @@
     "@remix-run/server-runtime": "^1.16.1",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.3.0",
+    "cloudinary": "^1.37.0",
     "date-fns": "^2.29.3",
     "date-fns-tz": "^2.0.0",
     "isbot": "^3.6.3",
