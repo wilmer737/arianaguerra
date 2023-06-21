@@ -14,6 +14,7 @@ import {
 import { Toast } from "~/components/Toast";
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { sessionStorage, getSession } from "./session.server";
+import { isProduction } from "~/utils";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
@@ -65,6 +66,20 @@ export default function App() {
 }
 
 export function ErrorBoundary({ error }: { error: Error }) {
+  if (isProduction) {
+    return (
+      <html>
+        <head>
+          <title>We messed up</title>
+        </head>
+        <body>
+          <h1>We messed up</h1>
+          <p>We are working on fixing it</p>
+        </body>
+      </html>
+    );
+  }
+
   return (
     <div>
       <h1>{error.name}</h1>

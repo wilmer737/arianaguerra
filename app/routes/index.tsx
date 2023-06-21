@@ -1,24 +1,22 @@
-import * as React from "react";
-import type { LoaderArgs, ActionArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import { useLoaderData, Link, Form } from "@remix-run/react";
+import type { LoaderArgs, ActionArgs, UploadHandler } from "@remix-run/node";
+import {
+  json,
+  redirect,
+  unstable_parseMultipartFormData as parseMultipartFormData,
+  unstable_composeUploadHandlers as composeUploadHandlers,
+  unstable_createMemoryUploadHandler as createMemoryUploadHandler,
+  writeAsyncIterableToWritable,
+} from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import { format, add, sub, parseISO } from "date-fns";
 import { utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import {
-  BsFillArrowLeftSquareFill,
-  BsFillArrowRightSquareFill,
-  BsFillPencilFill,
-} from "react-icons/bs";
-
-import Button from "~/components/Button";
-import Layout from "~/components/Layout";
-import ActivityList, {
-  type ActivityWithStringDates,
-} from "~/components/ActivityList";
 
 import { updateChild } from "~/models/child.server";
 import { getActivityByChildId } from "~/models/activity.server";
 import { requireUser, setGlobalMessage } from "~/session.server";
+import HomeView from "~/components/Views/HomeView";
+import { cloudinary } from "~/integrations/cloudinary.server";
+import type { UploadApiResponse } from "cloudinary";
 
 export const loader = async ({ request }: LoaderArgs) => {
   const user = await requireUser(request);
@@ -52,10 +50,54 @@ export const loader = async ({ request }: LoaderArgs) => {
   });
 };
 
+function uploadToCloudinary(
+  data: AsyncIterable<Uint8Array>
+): Promise<UploadApiResponse | undefined> {
+  const prom: Promise<UploadApiResponse | undefined> = new Promise(
+    async (res, rej) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        {
+          folder: "babyguerra/uploads/",
+          type: "private",
+        },
+        (error, result) => {
+          if (error) {
+            rej(error);
+          } else {
+            res(result);
+          }
+        }
+      );
+      await writeAsyncIterableToWritable(data, uploadStream);
+    }
+  );
+
+  return prom;
+}
+
 export const action = async ({ request }: ActionArgs) => {
   const user = await requireUser(request);
 
-  const formData = await request.formData();
+  const cloudUploadHandler: UploadHandler = async ({ data, name }) => {
+    if (name !== "photo") {
+      return undefined;
+    }
+
+    try {
+      const uploadedImg = await uploadToCloudinary(data);
+      return uploadedImg?.secure_url;
+    } catch {
+      return undefined;
+    }
+  };
+
+  const uploadHandler = composeUploadHandlers(
+    cloudUploadHandler,
+    createMemoryUploadHandler()
+  );
+
+  const formData = await parseMultipartFormData(request, uploadHandler);
+
   const photo = formData.get("photo");
 
   // todo: make this dynamic, probably based on the route
@@ -63,7 +105,11 @@ export const action = async ({ request }: ActionArgs) => {
 
   // todo: do zod validation
   if (!photo || typeof photo !== "string") {
-    return redirect("/");
+    return redirect("/", {
+      headers: {
+        "Set-Cookie": await setGlobalMessage(request, "error", "Invalid photo"),
+      },
+    });
   }
 
   await updateChild(child.id, { imgUrl: photo });
@@ -75,149 +121,10 @@ export const action = async ({ request }: ActionArgs) => {
   });
 };
 
-function Summary({ activities }: { activities: ActivityWithStringDates[] }) {
-  const getOunces = () => {
-    return activities
-      .filter((a) => a.type === "FEEDING")
-      .reduce((acc, curr) => {
-        if (!curr.metadata) return acc;
-        const meta = JSON.parse(curr.metadata);
-
-        const amount = Number(meta.amount);
-        if (Number.isNaN(amount)) return acc;
-
-        return acc + amount;
-      }, 0);
-  };
-
-  return (
-    <div className="w-full rounded-md bg-white p-4">
-      <h2 className="text-lg">Today's Activity</h2>
-      <p>Feeding: {getOunces()} ounces</p>
-    </div>
-  );
-}
-
-interface BabyAvatarProps {
-  imgUrl?: string | null;
-  firstName: string;
-  lastName: string;
-}
-
-const availablePhotos = ["ariana.jpg", "mamas.jpg"];
-
-function BabyAvatar({ imgUrl, firstName, lastName }: BabyAvatarProps) {
-  const [editPhoto, setEditPhoto] = React.useState(false);
-  const [selectedPhoto, setSelectedPhoto] = React.useState(imgUrl ?? "");
-
-  return (
-    <>
-      <div className="relative">
-        <img
-          src={imgUrl || "ariana.jpg"}
-          className="h-52 w-52 rounded-full border-4 object-cover"
-          alt={`${firstName} ${lastName}`}
-        />
-        <button
-          type="button"
-          className="absolute right-6 bottom-1 rounded-full border-2 border-teal-500 bg-white p-2"
-          onClick={() => setEditPhoto(true)}
-        >
-          <BsFillPencilFill />
-        </button>
-      </div>
-
-      {editPhoto && (
-        <Form method="post" reloadDocument>
-          <input type="hidden" name="photo" value={selectedPhoto} />
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="mx-4 w-full rounded-md bg-white p-4">
-              <h2 className="text-lg">Edit Photo</h2>
-
-              <div className="flex flex-col items-center justify-center">
-                {availablePhotos.map((photo) => {
-                  return (
-                    <button
-                      key={photo}
-                      type="button"
-                      onClick={() => setSelectedPhoto(photo)}
-                      className={`rounded-full p-2
-                      ${
-                        photo === selectedPhoto
-                          ? "border-2 border-teal-500"
-                          : ""
-                      }
-                    `}
-                    >
-                      <img
-                        src={photo}
-                        className={"h-32 w-32 rounded-full"}
-                        alt={`${photo} ariana`}
-                      />
-                    </button>
-                  );
-                })}
-              </div>
-
-              <div className="flex">
-                <Button
-                  purpose="tertiary"
-                  type="button"
-                  onClick={() => setEditPhoto(false)}
-                  size="small"
-                >
-                  Close
-                </Button>
-
-                <Button purpose="primary" type="submit" size="small">
-                  Save
-                </Button>
-              </div>
-            </div>
-          </div>
-        </Form>
-      )}
-    </>
-  );
-}
-
 function Home() {
   const { child, activities, date } = useLoaderData<typeof loader>();
-  const d = utcToZonedTime(date, "America/Los_Angeles");
 
-  const { imgUrl, firstName, lastName } = child;
-
-  const title = (
-    <div className="text-md flex items-center gap-2">
-      <Link
-        to={`/?date=${format(sub(d, { days: 1 }), "y-MM-dd")}`}
-        className="bg-teal-500"
-      >
-        <BsFillArrowLeftSquareFill />
-      </Link>
-      <span>{format(d, "MM-dd-y")}</span>
-
-      <Link
-        to={`/?date=${format(add(d, { days: 1 }), "y-MM-dd")}`}
-        className="bg-teal-500"
-      >
-        <BsFillArrowRightSquareFill />
-      </Link>
-    </div>
-  );
-
-  return (
-    <Layout title={title}>
-      <div className="flex flex-1 flex-col items-center">
-        <BabyAvatar imgUrl={imgUrl} firstName={firstName} lastName={lastName} />
-        <div className="p-2 font-['Arial_Black'] text-3xl text-white">
-          {firstName}
-        </div>
-        <Summary activities={activities} />
-        <ActivityList activities={activities} />
-      </div>
-    </Layout>
-  );
+  return <HomeView child={child} date={date} activities={activities} />;
 }
 
 export default Home;
