@@ -1,5 +1,6 @@
 import { Form } from "@remix-run/react";
 
+import { Select, Option } from "~/components/forms/fields/Select";
 import TextArea from "~/components/forms/fields/TextArea";
 import DateTimePicker from "~/components/forms/fields/Datetime";
 import Button from "~/components/Button";
@@ -38,20 +39,39 @@ const books = [
   {
     title: "Llama Llama Time to Share",
   },
+  {
+    title: "Where's Spot?",
+  },
+  {
+    title: "Animals Touch And Feel",
+  },
+  {
+    title: "You Are My Goodnight Kiss",
+  },
+  {
+    title: "Word's Book",
+  },
+  {
+    title: "The Pout-Pout Kiss Fish",
+  },
+  {
+    title: "The Little Mouse, the Red Ripe Strawberry, and the Big Hungry Bear",
+  },
+  {
+    title: "Daddy Hugs",
+  },
 ] as const;
 
 function BookDropdown({ name }: { name: string }) {
   return (
-    <select>
-      <option value="">Select a book</option>
+    <Select name={name}>
+      <Option value="" label="Select a book" />
       {books.map((book) => {
         return (
-          <option key={book.title} value={book.title}>
-            {book.title}
-          </option>
+          <Option key={book.title} value={book.title} label={book.title} />
         );
       })}
-    </select>
+    </Select>
   );
 }
 
