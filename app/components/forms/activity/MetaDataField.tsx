@@ -7,11 +7,17 @@ interface MetaDataFieldProps {
     label?: string;
     placeholder?: string;
     options?: string[];
+    component?: React.ElementType;
   };
 }
 
 function MetaDataField(props: MetaDataFieldProps) {
   const { meta } = props;
+
+  if (meta.type === "custom") {
+    const CustomComponent = meta.component;
+    return <CustomComponent name={meta.name} />;
+  }
 
   if (meta.type === "duration") {
     return (

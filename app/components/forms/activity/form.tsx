@@ -17,9 +17,53 @@ const activityTypes = {
   BATH: "BATH",
   TUMMY_TIME: "TUMMY_TIME",
   OTHER: "OTHER",
+  BOOK: "BOOK",
 };
 
+const books = [
+  {
+    title: "The Very Hungry Caterpillar",
+  },
+  {
+    title: "Goodnight Moon",
+  },
+  {
+    title: "Llama Llama Red Pajama",
+    coverImg:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeqlRJrIbZu48b-20pDe4vPh-kTmxUKi-GA&usqp=CAU",
+  },
+  {
+    title: "Llama Llama Mad at Mama",
+  },
+  {
+    title: "Llama Llama Time to Share",
+  },
+] as const;
+
+function BookDropdown({ name }: { name: string }) {
+  return (
+    <select>
+      <option value="">Select a book</option>
+      {books.map((book) => {
+        return (
+          <option key={book.title} value={book.title}>
+            {book.title}
+          </option>
+        );
+      })}
+    </select>
+  );
+}
+
 const metadataFields = {
+  [activityTypes.BOOK]: [
+    {
+      type: "custom",
+      component: BookDropdown,
+      label: "Book",
+      name: "meta.book",
+    },
+  ],
   [activityTypes.DIAPER_CHANGE]: [
     {
       type: "radio",

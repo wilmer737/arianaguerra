@@ -60,6 +60,11 @@ export const loader: LoaderFunction = async ({ request }) => {
       icon: "GiBabyFace",
       color: "blue",
     },
+    {
+      type: activityTypes.BOOK,
+      icon: "GiRead",
+      color: "yellow",
+    },
   ];
 
   const data: LoaderData = {

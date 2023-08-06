@@ -10,6 +10,7 @@ export const activityTypes = {
   MEDICATION: "MEDICATION",
   BATH: "BATH",
   TUMMY_TIME: "TUMMY_TIME",
+  BOOK: "BOOK",
   OTHER: "OTHER",
 };
 
