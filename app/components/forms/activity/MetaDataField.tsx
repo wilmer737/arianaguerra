@@ -7,7 +7,7 @@ interface MetaDataFieldProps {
     label?: string;
     placeholder?: string;
     options?: string[];
-    component?: React.ElementType;
+    component?: React.ComponentType<any>;
   };
 }
 
@@ -15,6 +15,8 @@ function MetaDataField(props: MetaDataFieldProps) {
   const { meta } = props;
 
   if (meta.type === "custom") {
+    if (!meta.component) throw new Error("Missing component");
+
     const CustomComponent = meta.component;
     return <CustomComponent name={meta.name} />;
   }
