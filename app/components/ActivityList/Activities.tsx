@@ -50,6 +50,11 @@ function Activities(props: ActivitiesProps) {
                 )}
               </p>
               <p className="text-slate-900">{activity.notes}</p>
+              {activity.metadata && (
+                <p className="text-xs text-gray-600">
+                  {Object.values(JSON.parse(activity.metadata)).join(", ")}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center gap-1">

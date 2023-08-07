@@ -80,7 +80,7 @@ function ActivityTypeRoute() {
 
   return (
     <Layout>
-      <div>
+      <div className="w-full">
         <Link to="/activity">
           <ButtonComponent width="auto" size="small" purpose="secondary">
             Back

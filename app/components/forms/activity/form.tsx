@@ -1,5 +1,6 @@
 import { Form } from "@remix-run/react";
 
+import { Select, Option } from "~/components/forms/fields/Select";
 import TextArea from "~/components/forms/fields/TextArea";
 import DateTimePicker from "~/components/forms/fields/Datetime";
 import Button from "~/components/Button";
@@ -17,9 +18,72 @@ const activityTypes = {
   BATH: "BATH",
   TUMMY_TIME: "TUMMY_TIME",
   OTHER: "OTHER",
+  BOOK: "BOOK",
 };
 
+const books = [
+  {
+    title: "The Very Hungry Caterpillar",
+  },
+  {
+    title: "Goodnight Moon",
+  },
+  {
+    title: "Llama Llama Red Pajama",
+    coverImg:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZeqlRJrIbZu48b-20pDe4vPh-kTmxUKi-GA&usqp=CAU",
+  },
+  {
+    title: "Llama Llama Mad at Mama",
+  },
+  {
+    title: "Llama Llama Time to Share",
+  },
+  {
+    title: "Where's Spot?",
+  },
+  {
+    title: "Animals Touch And Feel",
+  },
+  {
+    title: "You Are My Goodnight Kiss",
+  },
+  {
+    title: "Word's Book",
+  },
+  {
+    title: "The Pout-Pout Kiss Fish",
+  },
+  {
+    title: "The Little Mouse, the Red Ripe Strawberry, and the Big Hungry Bear",
+  },
+  {
+    title: "Daddy Hugs",
+  },
+] as const;
+
+function BookDropdown({ name }: { name: string }) {
+  return (
+    <Select name={name}>
+      <Option value="" label="Select a book" />
+      {books.map((book) => {
+        return (
+          <Option key={book.title} value={book.title} label={book.title} />
+        );
+      })}
+    </Select>
+  );
+}
+
 const metadataFields = {
+  [activityTypes.BOOK]: [
+    {
+      type: "custom",
+      component: BookDropdown,
+      label: "Book",
+      name: "meta.book",
+    },
+  ],
   [activityTypes.DIAPER_CHANGE]: [
     {
       type: "radio",

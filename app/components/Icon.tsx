@@ -4,7 +4,8 @@ import {
   GiBathtub,
   GiNightSleep,
   GiFloorHatch,
-  GiBabyFace
+  GiBabyFace,
+  GiRead,
 } from "react-icons/gi";
 import { MdBabyChangingStation } from "react-icons/md";
 import type { IconType } from "react-icons";
@@ -16,7 +17,8 @@ const icons: Record<string, IconType> = {
   GiNightSleep,
   MdBabyChangingStation,
   GiFloorHatch,
-  GiBabyFace
+  GiBabyFace,
+  GiRead,
 };
 
 interface IconProps {
